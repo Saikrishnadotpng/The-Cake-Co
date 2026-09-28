@@ -1,0 +1,2097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Menu Studio | The Cake Co.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232C2523'/%3E%3Cpath d='M16 7l2.2 6.8L25 16l-6.8 2.2L16 25l-2.2-6.8L7 16l6.8-2.2z' fill='%23D4AF37'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Montserrat:wght@400;500;600&display=swap">
+<script nonce="__CSP_NONCE__">try { document.documentElement.dataset.theme = localStorage.getItem("tcc-theme") === "light" ? "light" : "dark"; } catch { document.documentElement.dataset.theme = "dark"; }</script>
+<style nonce="__CSP_NONCE__">
+  :root {
+    --ivory: #0D0B0A; --espresso: #F5F2EB; --soft: #B9B1A3; --sand: #191613; --sand-deep: #453B2C; --gold: #D4AF37; --gold-deep: #E4C86A; --error: #E88B77;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1); --silk: cubic-bezier(0.45, 0, 0.55, 1);
+    --serif: "Cormorant Garamond", Georgia, serif; --sans: Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color-scheme: dark;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--ivory); color: var(--espresso); font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; background: none; border: 0; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: clamp(1.25rem, 4vw, 2.5rem); }
+  .eyebrow { font-size: .62rem; letter-spacing: .26em; text-transform: uppercase; color: var(--soft); font-weight: 500; }
+  .brand { font-family: var(--serif); font-size: 1.1rem; letter-spacing: .34em; }
+  h1, h2 { font-family: var(--serif); font-weight: 400; line-height: 1.1; }
+
+  .btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: .55rem; min-height: 48px; padding: 0 1.5rem; border-radius: 999px; font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 500; transition: transform 450ms var(--silk), box-shadow 500ms var(--silk), background-color 450ms var(--silk), color 450ms var(--silk); }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: scale(.97); }
+  .btn[disabled] { opacity: .55; pointer-events: none; }
+  .btn-primary { background: var(--espresso); color: var(--ivory); border: 1px solid var(--gold); box-shadow: 0 14px 30px -16px rgba(44,37,35,.7); }
+  .btn-primary:hover { background: var(--gold); color: var(--espresso); }
+  .btn-ghost { border: 1px solid var(--gold); }
+  .btn-ghost:hover { background: var(--gold); }
+  .spinner { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid currentColor; border-right-color: transparent; animation: spin .8s linear infinite; display: none; }
+  .btn[aria-busy="true"] .spinner { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Login modal */
+  .gate { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 1.25rem; background: radial-gradient(circle at 50% 30%, #F4ECE1, var(--ivory) 70%); }
+  .gate-card { width: 100%; max-width: 420px; background: rgba(250,248,245,.92); border: 1px solid rgba(212,175,55,.45); border-radius: 1.5rem; padding: clamp(1.75rem, 5vw, 2.5rem); box-shadow: 0 30px 80px -40px rgba(44,37,35,.45); animation: rise .9s var(--ease) both; text-align: center; }
+  @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  .gate-card h1 { margin-top: 1rem; font-size: 2.2rem; }
+  .gate-card p.sub { margin-top: .5rem; color: var(--soft); font-size: .9rem; }
+  .gate-card form { margin-top: 1.75rem; display: grid; gap: 1rem; text-align: left; }
+
+  .field { display: grid; gap: .5rem; }
+  .label { font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: var(--soft); font-weight: 500; }
+  .input { width: 100%; min-height: 50px; padding: .8rem 1rem; border-radius: .9rem; border: 1px solid var(--sand-deep); background: rgba(250,248,245,.8); font-size: 1rem; transition: border-color 400ms var(--silk), box-shadow 450ms var(--silk); -webkit-appearance: none; appearance: none; }
+  .input:hover { border-color: rgba(212,175,55,.6); }
+  .input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(212,175,55,.15); }
+  .input[aria-invalid="true"] { border-color: var(--error); box-shadow: 0 0 0 4px rgba(180,83,60,.12); }
+  select.input { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23D4AF37' stroke-width='1.4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+  textarea.input { min-height: 96px; resize: vertical; line-height: 1.7; }
+  .error { font-size: .78rem; color: var(--error); min-height: 1.1em; }
+  .hint { font-size: .75rem; color: var(--soft); }
+
+  .price-wrap { position: relative; }
+  .price-wrap .prefix { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-family: var(--serif); font-size: 1.2rem; color: var(--gold-deep); pointer-events: none; }
+  .price-wrap .input { padding-left: 2.2rem; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+  .price-preview { font-family: var(--serif); font-size: 1.35rem; color: var(--espresso); min-height: 1.6em; }
+
+  /* Layout */
+  .top { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid rgba(212,175,55,.35); padding-bottom: 1.5rem; }
+  .top h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-top: .6rem; }
+  .top .actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+  .studio { margin-top: 2rem; display: grid; gap: 1.25rem; align-items: start; }
+  @media (min-width: 1180px) { .studio { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; } .studio-form { grid-column: span 6; } .history-panel, .studio-inventory { grid-column: span 3; min-width: 0; } }
+  .panel { border: 1px solid rgba(212,175,55,.35); border-radius: 1.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: rgba(250,248,245,.7); }
+  @media (min-width: 1180px) { .panel.sticky { position: sticky; top: 1.5rem; } }
+  .panel h2 { font-size: 1.9rem; }
+  .form { margin-top: 1.5rem; display: grid; gap: 1.1rem; }
+  .row2 { display: grid; gap: 1.1rem; }
+  @media (min-width: 520px) { .row2 { grid-template-columns: 1fr 1fr; } }
+
+  .drop { position: relative; border: 1.5px dashed var(--sand-deep); border-radius: 1.1rem; min-height: 170px; display: grid; place-items: center; text-align: center; padding: 1.25rem; transition: border-color 400ms var(--silk), background-color 400ms var(--silk); overflow: hidden; cursor: pointer; }
+  .drop:hover, .drop.over { border-color: var(--gold); background: rgba(212,175,55,.06); }
+  .drop input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 5; }
+  .drop .drop-content { pointer-events: none; }
+  .drop .icon { width: 36px; height: 36px; margin: 0 auto .6rem; color: var(--gold-deep); }
+  .drop strong { display: block; font-weight: 500; font-size: .9rem; }
+  .drop span { display: block; font-size: .75rem; color: var(--soft); margin-top: .25rem; }
+  .preview { display: grid; grid-template-columns: 88px 1fr auto; gap: 1rem; align-items: center; border: 1px solid rgba(212,175,55,.35); border-radius: 1rem; padding: .6rem; }
+  .preview img { width: 88px; height: 110px; object-fit: cover; border-radius: .7rem; background: var(--sand); }
+  .preview p { font-size: .78rem; color: var(--soft); line-height: 1.5; word-break: break-all; }
+  .or { display: flex; align-items: center; gap: .75rem; font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: var(--soft); }
+  .or::before, .or::after { content: ""; flex: 1; height: 1px; background: rgba(212,175,55,.35); }
+
+  .preset-images-group { margin-top: .65rem; }
+  .preset-label { display: block; font-size: .58rem; letter-spacing: .18em; text-transform: uppercase; color: var(--soft); margin-bottom: .35rem; }
+  .preset-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .preset-chip {
+    padding: .35rem .75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(212,175,55,.35);
+    background: rgba(212,175,55,.08);
+    color: var(--espresso);
+    font-size: .68rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 250ms var(--silk);
+  }
+  .preset-chip:hover {
+    border-color: var(--gold);
+    background: rgba(212,175,55,.2);
+    transform: translateY(-1px);
+  }
+
+  .notice { display: none; border-radius: .9rem; padding: .9rem 1.1rem; font-size: .85rem; line-height: 1.6; border: 1px solid; }
+  .notice.show { display: block; animation: rise .5s var(--ease) both; }
+  .notice.err { border-color: rgba(180,83,60,.45); background: rgba(180,83,60,.08); }
+  .notice.ok { border-color: rgba(212,175,55,.5); background: rgba(212,175,55,.08); }
+
+  .grid-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .grid { margin-top: 1.5rem; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .item { position: relative; border: 1px solid rgba(212,175,55,.3); border-radius: 1.2rem; overflow: hidden; background: var(--ivory); transition: transform 500ms var(--ease), opacity 400ms var(--silk), box-shadow 500ms var(--silk); }
+  .item:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -28px rgba(44,37,35,.5); }
+  .item.removing { opacity: 0; transform: scale(.96); }
+  .item .thumb { aspect-ratio: 4 / 3; background: radial-gradient(120% 90% at 30% 20%, #F3E9DC, #D9C3A5); display: grid; place-items: center; }
+  .item .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .item .thumb .noimg { font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: var(--soft); }
+  .item .body { padding: 1rem 1.1rem 1.1rem; }
+  .item h3 { font-family: var(--serif); font-weight: 400; font-size: 1.35rem; line-height: 1.2; }
+  .item .meta { margin-top: .35rem; font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: var(--soft); }
+  .item .price { margin-top: .6rem; font-family: var(--serif); font-size: 1.2rem; }
+  .item .price.req { font-style: italic; color: var(--soft); font-size: 1rem; }
+  .item .del { position: absolute; top: .7rem; right: .7rem; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: rgba(250,248,245,.92); border: 1px solid rgba(180,83,60,.4); color: var(--error); transition: background-color 400ms var(--silk), color 400ms var(--silk), transform 400ms var(--silk); }
+  .item .del:hover { background: var(--error); color: var(--ivory); transform: scale(1.06); }
+  .item .del svg { width: 18px; height: 18px; }
+  .empty { grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; border: 1px dashed var(--sand-deep); border-radius: 1.2rem; color: var(--soft); }
+
+  .toast { position: fixed; left: 50%; bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 30px); opacity: 0; pointer-events: none; z-index: 90; display: flex; gap: 1rem; align-items: center; background: var(--espresso); color: var(--ivory); border: 1px solid var(--gold); border-radius: 999px; padding: .5rem .5rem .5rem 1.25rem; font-size: .82rem; transition: transform 500ms var(--ease), opacity 400ms var(--silk); max-width: calc(100vw - 2rem); }
+  .toast.show { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+  .toast button { min-height: 40px; padding: 0 1rem; border-radius: 999px; border: 1px solid var(--gold); color: var(--gold); font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; }
+  .toast button:hover { background: var(--gold); color: var(--espresso); }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+  body { background: #0D0B0A; color: #F5F2EB; }
+  .gate { background: radial-gradient(ellipse at 50% 28%, #211A13 0%, #0D0B0A 68%); }
+  .gate-card, .panel { background: rgba(18,16,14,.96); border-color: rgba(212,175,55,.34); box-shadow: 0 30px 80px -40px rgba(0,0,0,.9); }
+  .btn-primary { background: linear-gradient(135deg, #231A12, #33251A 55%, #1A140F); color: #F5F2EB; box-shadow: 0 14px 30px -16px rgba(0,0,0,.9); }
+  .btn-primary:hover { background: #D4AF37; color: #0D0B0A; }
+  .btn-ghost { color: #F5F2EB; }
+  .btn-ghost:hover { color: #0D0B0A; }
+  .input { color: #F5F2EB; background: #171310; border-color: #453B2C; }
+  .input::placeholder { color: #81796E; opacity: 1; }
+  .input:focus { background: #1D1813; }
+  select.input option { color: #F5F2EB; background: #171310; }
+  .price-preview, .top .brand { color: #F5F2EB; }
+  .top { border-bottom-color: rgba(212,175,55,.3); }
+  .drop { background: #14110E; border-color: #453B2C; }
+  .drop:hover, .drop.over { background: rgba(212,175,55,.06); }
+  .preview { background: #14110E; border-color: rgba(212,175,55,.3); }
+  .preview img { background: #191613; }
+  .notice.ok { background: rgba(212,175,55,.08); }
+  .notice.err { background: rgba(232,139,119,.08); border-color: rgba(232,139,119,.45); }
+  .item { background: #14110E; border-color: rgba(212,175,55,.28); }
+  .item:hover { box-shadow: 0 20px 40px -28px rgba(0,0,0,.95); }
+  .item .thumb { background: radial-gradient(120% 90% at 30% 20%, #33261A, #17120F); }
+  .item .del { background: rgba(20,17,14,.94); border-color: rgba(232,139,119,.45); }
+  .item .del:hover { background: #B84F45; color: #F5F2EB; }
+  .empty { border-color: #453B2C; background: #12100E; }
+  .toast { background: #211A13; color: #F5F2EB; }
+  .toast button { color: #E4C86A; }
+  .toast button:hover { color: #0D0B0A; }
+  .error { color: #F09A86; }
+  :focus-visible { outline-color: #E4C86A; }
+  .studio-footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(212,175,55,.3); }
+  .business-grid { display: grid; gap: 2rem; }
+  @media (min-width: 760px) { .business-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem; } }
+  .business-col h2 { font: 500 .62rem/1.4 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--soft); }
+  .business-col p, .business-col address { margin-top: .7rem; font-size: .88rem; line-height: 1.8; font-style: normal; overflow-wrap: anywhere; }
+  .business-col a { display: inline-block; margin-top: .65rem; color: var(--gold-deep); text-decoration: underline; text-decoration-color: rgba(212,175,55,.45); text-underline-offset: 4px; }
+  .studio-credit { margin-top: 2rem; padding: 1.25rem 0; border-top: 1px solid rgba(212,175,55,.2); color: var(--soft); font-size: .7rem; letter-spacing: .08em; text-align: center; }
+  .history-panel { background: linear-gradient(155deg, rgba(34,28,21,.94), rgba(17,15,13,.96)); }
+  .history-head { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; }
+  .history-head h2 { font-size: 1.65rem; }
+  .history-count { color: var(--gold-deep); font-size: .68rem; font-variant-numeric: tabular-nums; }
+  .recent-list { margin-top: 1.1rem; padding-right: .3rem; display: grid; gap: .65rem; max-height: min(66vh, 720px); overflow-y: auto; overscroll-behavior: contain; scrollbar-color: rgba(212,175,55,.5) rgba(255,255,255,.04); scrollbar-width: thin; }
+  .recent-entry { min-width: 0; list-style: none; }
+  .recent-button { width: 100%; display: block; padding: .85rem .9rem; text-align: left; border: 1px solid rgba(212,175,55,.22); border-radius: .85rem; background: linear-gradient(130deg, rgba(255,255,255,.055), rgba(255,255,255,.018)); transition: border-color 300ms var(--silk), background-color 300ms var(--silk), transform 300ms var(--ease); }
+  .recent-button:hover, .recent-button:focus-visible { border-color: rgba(212,175,55,.8); background-color: rgba(212,175,55,.075); transform: translateY(-1px); }
+  .recent-name { display: block; color: #F5F2EB; font-size: .84rem; font-weight: 500; line-height: 1.4; overflow-wrap: anywhere; }
+  .recent-meta { display: flex; flex-wrap: wrap; gap: .3rem .6rem; margin-top: .35rem; color: var(--gold-deep); font-size: .64rem; }
+  .recent-description { display: -webkit-box; margin-top: .45rem; color: #B9B1A3; font-size: .73rem; line-height: 1.5; overflow: hidden; overflow-wrap: anywhere; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .history-empty { padding: 1rem .7rem; color: var(--soft); font-size: .8rem; line-height: 1.65; border: 1px dashed rgba(212,175,55,.26); border-radius: .85rem; }
+  .history-populated { border-color: #D4AF37 !important; box-shadow: 0 0 0 3px rgba(212,175,55,.16), 0 0 22px rgba(212,175,55,.14) !important; transition: border-color 220ms ease, box-shadow 220ms ease; }
+  @media (max-width: 1179px) { .recent-list { max-height: 440px; } }
+  @media (prefers-reduced-motion: reduce) { .recent-button { transition-duration: .01ms; } }
+  .password-control { position: relative; }
+  .password-control .input { padding-right: 3.5rem; }
+  .password-visibility { position: absolute; right: .4rem; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; display: grid; place-items: center; border-radius: .65rem; color: var(--soft); transition: color 250ms var(--silk), background-color 250ms var(--silk); }
+  .password-visibility:hover { color: var(--gold-deep); background: rgba(212,175,55,.08); }
+  .password-visibility svg { width: 19px; height: 19px; }
+  .password-visibility .eye-off { display: none; }
+  .password-visibility[aria-pressed="true"] .eye-on { display: none; }
+  .password-visibility[aria-pressed="true"] .eye-off { display: block; }
+  .employee-select { text-align: left; }
+  .top { align-items: center; }
+  .active-profile { display: flex; align-items: center; gap: .8rem; min-width: 0; margin-left: auto; }
+  .active-profile img { width: 46px; height: 46px; flex: 0 0 auto; border: 1px solid rgba(212,175,55,.7); border-radius: 50%; background: #211A13; object-fit: cover; }
+  .active-profile .profile-label { color: var(--gold-deep); font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; }
+  .active-profile .profile-name { margin-top: .15rem; color: #F5F2EB; font-size: .78rem; line-height: 1.35; }
+  .audit-terminal { margin: 3rem calc(50% - 50vw) 0; padding: 2rem max(clamp(1.25rem, 4vw, 2.5rem), calc((100vw - 1240px) / 2 + 2.5rem)); border-block: 1px solid rgba(212,175,55,.3); background: linear-gradient(135deg, #15120F, #0D0B0A 62%, #17120D); }
+  .audit-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem; }
+  .audit-head h2 { margin-top: .4rem; color: #F5F2EB; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+  .audit-status { min-height: 1.2em; color: var(--soft); font-size: .74rem; }
+  .audit-table-wrap { margin-top: 1.25rem; max-height: 440px; overflow: auto; border: 1px solid rgba(212,175,55,.24); border-radius: .8rem; background: rgba(255,255,255,.018); }
+  .audit-table { width: 100%; min-width: 680px; border-collapse: collapse; text-align: left; }
+  .audit-table th { position: sticky; top: 0; z-index: 1; padding: .75rem 1rem; color: var(--gold-deep); background: #191510; font-size: .6rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; }
+  .audit-table td { padding: .75rem 1rem; border-top: 1px solid rgba(212,175,55,.12); color: #F5F2EB; font-size: .76rem; vertical-align: top; }
+  .audit-table tbody tr:hover { background: rgba(212,175,55,.045); }
+  .audit-table .audit-time { color: var(--soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .audit-table .audit-employee { min-width: 170px; }
+  .audit-table .audit-id { display: block; margin-top: .1rem; color: var(--gold-deep); font-size: .65rem; }
+  .audit-event { display: inline-flex; align-items: center; gap: .4rem; }
+  .audit-event::before { content: ""; width: 6px; height: 6px; flex: 0 0 auto; border-radius: 50%; background: #8CC29C; }
+  .audit-event.logout::before { background: #E6A18E; }
+  .audit-empty { padding: 1.2rem !important; color: var(--soft) !important; }
+  .theme-toggle { width: 46px; height: 44px; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid rgba(212,175,55,.5); border-radius: 50%; color: var(--gold-deep); transition: color 350ms var(--silk), background-color 350ms var(--silk), border-color 350ms var(--silk); }
+  .theme-toggle:hover { color: #0D0B0A; background: var(--gold); }
+  .theme-toggle svg { width: 18px; height: 18px; }
+  .theme-toggle .moon-icon { display: none; }
+  :root[data-theme="light"] { --ivory: #FAF8F5; --espresso: #2C2523; --soft: #6E625C; --sand: #EDE4D7; --sand-deep: #D6C6B0; --gold-deep: #8A6E17; --error: #B34F42; color-scheme: light; }
+  :root[data-theme="light"] .theme-toggle .sun-icon { display: none; }
+  :root[data-theme="light"] .theme-toggle .moon-icon { display: block; }
+  :root[data-theme="light"] .theme-toggle:hover { color: #FAF8F5; background: #2C2523; border-color: #2C2523; }
+  :root[data-theme="light"] body { background: #FAF8F5; color: #2C2523; }
+  :root[data-theme="light"] .gate { background: radial-gradient(ellipse at 50% 28%, #F3EADF 0%, #FAF8F5 70%); }
+  :root[data-theme="light"] .gate-card, :root[data-theme="light"] .panel { background: rgba(255,253,249,.96); border-color: rgba(138,110,23,.32); box-shadow: 0 24px 64px -40px rgba(44,37,35,.35); }
+  :root[data-theme="light"] .gate-card h1, :root[data-theme="light"] .panel h2, :root[data-theme="light"] .top h1, :root[data-theme="light"] .brand { color: #2C2523; }
+  :root[data-theme="light"] .gate-card p.sub { color: #6E625C; }
+  :root[data-theme="light"] .btn-primary { background: #2C2523; color: #FAF8F5; box-shadow: 0 14px 30px -16px rgba(44,37,35,.45); }
+  :root[data-theme="light"] .btn-primary:hover { background: #D4AF37; color: #2C2523; }
+  :root[data-theme="light"] .btn-ghost { color: #2C2523; }
+  :root[data-theme="light"] .input { color: #2C2523; background: #FFFDFA; border-color: #D6C6B0; }
+  :root[data-theme="light"] .input::placeholder { color: #81786E; }
+  :root[data-theme="light"] select.input option { color: #2C2523; background: #FFFDFA; }
+  :root[data-theme="light"] .price-preview { color: #2C2523; }
+  :root[data-theme="light"] .item { background: #FFFDFA; border-color: rgba(138,110,23,.24); }
+  :root[data-theme="light"] .item h3, :root[data-theme="light"] .item .price { color: #2C2523; }
+  :root[data-theme="light"] .item .thumb { background: radial-gradient(120% 90% at 30% 20%, #F3E9DC, #D9C3A5); }
+  :root[data-theme="light"] .item .del { background: rgba(250,248,245,.96); color: #B34F42; border-color: rgba(179,79,66,.4); }
+  :root[data-theme="light"] .empty { color: #6E625C; background: #FFFDFA; border-color: #D6C6B0; }
+  :root[data-theme="light"] .drop { background: #FFFDFA; border-color: #D6C6B0; }
+  :root[data-theme="light"] .drop:hover, :root[data-theme="light"] .drop.over { background: rgba(212,175,55,.08); }
+  :root[data-theme="light"] .preview { background: #FFFDFA; border-color: rgba(138,110,23,.3); }
+  :root[data-theme="light"] .notice.err { background: rgba(179,79,66,.06); border-color: rgba(179,79,66,.35); }
+  :root[data-theme="light"] .notice.ok { background: rgba(138,110,23,.07); border-color: rgba(138,110,23,.32); }
+  :root[data-theme="light"] .toast { background: #2C2523; color: #FAF8F5; }
+  :root[data-theme="light"] .active-profile .profile-name { color: #2C2523; }
+  :root[data-theme="light"] .recent-name { color: #F5F2EB; }
+
+  /* Mandatory Fail-Safe Session Exit Guard Modal */
+  .exit-guard-backdrop {
+    position: fixed; inset: 0; z-index: 9999;
+    display: grid; place-items: center; padding: 1.25rem;
+    background: rgba(13, 11, 10, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    animation: rise .35s var(--ease) both;
+  }
+  .exit-guard-card {
+    width: 100%; max-width: 520px;
+    background: var(--ivory);
+    border: 2px solid var(--gold);
+    border-radius: 1.5rem;
+    padding: clamp(1.75rem, 5vw, 2.5rem);
+    box-shadow: 0 32px 90px -20px rgba(0,0,0,.75), 0 0 40px rgba(212,175,55,.2);
+    text-align: center;
+    animation: rise .45s var(--ease) both;
+  }
+  .exit-guard-badge {
+    display: inline-flex; align-items: center; gap: .45rem;
+    font-size: .62rem; letter-spacing: .24em; text-transform: uppercase;
+    font-weight: 600; color: var(--gold-deep);
+    border: 1px solid rgba(212,175,55,.45);
+    background: rgba(212,175,55,.1);
+    padding: .35rem .85rem; border-radius: 999px; margin-bottom: 1.1rem;
+  }
+  .exit-guard-card h2 {
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    color: var(--espresso);
+    margin-bottom: .85rem;
+  }
+  .exit-guard-text {
+    font-size: .95rem; line-height: 1.65;
+    color: var(--espresso);
+    border: 1px solid rgba(212,175,55,.3);
+    background: rgba(212,175,55,.06);
+    border-radius: 1rem;
+    padding: 1.15rem;
+    margin-bottom: 1.65rem;
+    font-weight: 500;
+  }
+  .exit-guard-actions {
+    display: flex; flex-direction: column; gap: .75rem;
+  }
+  @media (min-width: 480px) {
+    .exit-guard-actions { flex-direction: row; justify-content: center; }
+  }
+  :root[data-theme="light"] .exit-guard-backdrop {
+    background: rgba(245, 242, 235, 0.92);
+  }
+  :root[data-theme="light"] .exit-guard-card {
+    background: #FAF8F5;
+    border-color: rgba(138,110,23,.5);
+    box-shadow: 0 32px 80px -20px rgba(44,37,35,.35), 0 0 30px rgba(212,175,55,.2);
+  }
+  :root[data-theme="light"] .exit-guard-text {
+    background: rgba(138,110,23,.07);
+    border-color: rgba(138,110,23,.3);
+  }
+
+  /* =========================================================================
+     Peak-Hour Swap-Prevention Deck & Order Verification Styles
+     ========================================================================= */
+  .orders-deck {
+    margin-top: 2.5rem;
+    border: 1px solid rgba(212,175,55,.45);
+    border-radius: 1.5rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background: rgba(25, 22, 19, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  :root[data-theme="light"] .orders-deck {
+    background: rgba(255, 253, 249, 0.95);
+    border-color: rgba(138,110,23,.38);
+    box-shadow: 0 24px 64px -40px rgba(44,37,35,.25);
+  }
+  .orders-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(212,175,55,.25);
+    padding-bottom: 1.25rem;
+  }
+  .orders-head h2 {
+    font-size: clamp(1.8rem, 4vw, 2.3rem);
+    color: var(--espresso);
+    margin-top: .4rem;
+  }
+  .orders-head-actions {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    flex-wrap: wrap;
+  }
+  .orders-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .65rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: .35rem .85rem;
+    border-radius: 999px;
+    background: rgba(212,175,55,.12);
+    border: 1px solid rgba(212,175,55,.4);
+    color: var(--gold-deep);
+  }
+  .orders-status-pill::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #8CC29C;
+    box-shadow: 0 0 8px #8CC29C;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+
+  .orders-booking-drawer {
+    margin-top: 1.5rem;
+    border: 1.5px dashed rgba(212,175,55,.45);
+    border-radius: 1.2rem;
+    padding: 1.5rem;
+    background: rgba(212,175,55,.04);
+    animation: rise .35s var(--ease) both;
+  }
+  .orders-booking-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    margin-top: 1rem;
+  }
+
+  .orders-grid {
+    margin-top: 1.75rem;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+  @media (min-width: 1400px) {
+    .orders-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* High-Contrast Glassmorphic Order Card */
+  .order-card {
+    position: relative;
+    border: 1px solid rgba(212,175,55,.3);
+    border-radius: 1.35rem;
+    padding: 1.4rem;
+    background: rgba(20, 17, 15, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.1rem;
+    transition: transform 350ms var(--ease), box-shadow 350ms var(--ease), border-color 350ms var(--silk);
+  }
+  .order-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+    box-shadow: 0 20px 45px -20px rgba(0,0,0,.65), 0 0 25px rgba(212,175,55,.15);
+  }
+  :root[data-theme="light"] .order-card {
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(138,110,23,.25);
+    box-shadow: 0 16px 36px -20px rgba(44,37,35,.15);
+  }
+  :root[data-theme="light"] .order-card:hover {
+    border-color: rgba(138,110,23,.6);
+    box-shadow: 0 20px 45px -20px rgba(44,37,35,.25), 0 0 20px rgba(212,175,55,.15);
+  }
+
+  .order-card.is-verified {
+    border-color: rgba(76, 175, 80, 0.5);
+    background: rgba(18, 25, 20, 0.85);
+  }
+  :root[data-theme="light"] .order-card.is-verified {
+    background: rgba(246, 252, 246, 0.95);
+    border-color: rgba(46, 125, 50, 0.4);
+  }
+
+  .order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: .75rem;
+  }
+
+  /* High-visibility bright gold structural boundary border around Order Token ID */
+  .order-token-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-family: monospace, var(--sans);
+    font-size: .88rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: var(--espresso);
+    padding: .35rem .75rem;
+    border-radius: .7rem;
+    border: 2px solid var(--gold);
+    background: rgba(212,175,55,.14);
+    box-shadow: 0 0 15px rgba(212,175,55,.2);
+  }
+  :root[data-theme="light"] .order-token-badge {
+    color: #2C2523;
+    background: rgba(212,175,55,.18);
+    border-color: #8A6E17;
+  }
+
+  .order-item-name {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--espresso);
+    margin-top: .4rem;
+  }
+  :root[data-theme="light"] .order-item-name {
+    color: #2C2523;
+  }
+
+  .order-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    align-items: center;
+  }
+
+  .order-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .72rem;
+    padding: .25rem .65rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(212,175,55,.22);
+    color: var(--soft);
+    font-weight: 500;
+  }
+  :root[data-theme="light"] .order-chip {
+    background: rgba(0,0,0,.03);
+    border-color: rgba(138,110,23,.22);
+    color: #6E625C;
+  }
+
+  /* Custom Lettering/Frosting Messaging container */
+  .order-custom-msg {
+    padding: .85rem 1rem;
+    border-radius: .85rem;
+    background: rgba(212,175,55,.06);
+    border-left: 3px solid var(--gold);
+    font-size: .84rem;
+    line-height: 1.5;
+    color: var(--espresso);
+  }
+  :root[data-theme="light"] .order-custom-msg {
+    background: rgba(138,110,23,.07);
+    border-left-color: #8A6E17;
+    color: #2C2523;
+  }
+  .order-custom-msg strong {
+    display: block;
+    font-size: .62rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin-bottom: .2rem;
+  }
+
+  .order-wa-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .76rem;
+    color: #8CC29C;
+    text-decoration: none;
+    transition: color 250ms var(--silk);
+  }
+  .order-wa-link:hover {
+    color: #A7E0B5;
+    text-decoration: underline;
+  }
+  :root[data-theme="light"] .order-wa-link {
+    color: #2E7D32;
+  }
+
+  /* Status Badges */
+  .order-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    font-size: .72rem;
+    letter-spacing: .1em;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: .45rem 1rem;
+    border-radius: .75rem;
+    width: 100%;
+    justify-content: center;
+  }
+  .order-status-badge.pending {
+    background: rgba(245, 124, 0, 0.14);
+    border: 1.5px solid rgba(245, 124, 0, 0.65);
+    color: #FFB74D;
+  }
+  :root[data-theme="light"] .order-status-badge.pending {
+    background: rgba(245, 124, 0, 0.12);
+    border-color: #E65100;
+    color: #BF360C;
+  }
+
+  .order-status-badge.verified {
+    background: rgba(46, 125, 50, 0.18);
+    border: 1.5px solid rgba(76, 175, 80, 0.75);
+    color: #A5D6A7;
+    box-shadow: 0 0 16px rgba(76, 175, 80, 0.18);
+  }
+  :root[data-theme="light"] .order-status-badge.verified {
+    background: rgba(46, 125, 50, 0.14);
+    border-color: #2E7D32;
+    color: #1B5E20;
+  }
+
+  .order-verify-btn {
+    width: 100%;
+    min-height: 44px;
+    font-size: .68rem;
+    letter-spacing: .16em;
+    background: var(--gold);
+    color: #0D0B0A;
+    font-weight: 600;
+    border: 1px solid var(--gold-deep);
+  }
+  .order-verify-btn:hover {
+    background: #E4C86A;
+    transform: translateY(-2px);
+  }
+  .order-verified-info {
+    font-size: .7rem;
+    color: var(--soft);
+    text-align: center;
+    margin-top: .35rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .orders-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--soft);
+    font-size: .88rem;
+    border: 1px dashed rgba(212,175,55,.25);
+    border-radius: 1rem;
+  }
+
+  .order-cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .3rem .65rem;
+    border-radius: 999px;
+    font-size: .62rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    background: rgba(232, 139, 119, 0.12);
+    border: 1px solid rgba(232, 139, 119, 0.45);
+    color: #E88B77;
+    cursor: pointer;
+    transition: all 250ms var(--silk);
+  }
+  .order-cancel-btn:hover {
+    background: rgba(232, 139, 119, 0.25);
+    border-color: #E88B77;
+    color: #FFA494;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -4px rgba(232, 139, 119, 0.35);
+  }
+  .order-cancel-btn:active {
+    transform: scale(.95);
+  }
+  :root[data-theme="light"] .order-cancel-btn {
+    background: rgba(211, 47, 47, 0.08);
+    border-color: rgba(211, 47, 47, 0.35);
+    color: #C62828;
+  }
+  :root[data-theme="light"] .order-cancel-btn:hover {
+    background: rgba(211, 47, 47, 0.16);
+    border-color: #C62828;
+    color: #B71C1C;
+  }
+
+  .order-cancel-action-btn {
+    width: 100%;
+    min-height: 42px;
+    font-size: .68rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-radius: 999px;
+    background: rgba(232, 139, 119, 0.12);
+    border: 1.5px solid rgba(232, 139, 119, 0.5);
+    color: #FFA494;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    transition: all 250ms var(--silk);
+  }
+  .order-cancel-action-btn:hover {
+    background: rgba(232, 139, 119, 0.28);
+    border-color: #E88B77;
+    color: #FFC0B5;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -6px rgba(232, 139, 119, 0.4);
+  }
+  .order-cancel-action-btn:active {
+    transform: scale(.96);
+  }
+  :root[data-theme="light"] .order-cancel-action-btn {
+    background: rgba(211, 47, 47, 0.08);
+    border-color: rgba(211, 47, 47, 0.45);
+    color: #C62828;
+  }
+  :root[data-theme="light"] .order-cancel-action-btn:hover {
+    background: rgba(211, 47, 47, 0.16);
+    border-color: #B71C1C;
+    color: #B71C1C;
+  }
+
+  .audit-event.verification::before { background: #D4AF37; box-shadow: 0 0 6px #D4AF37; }
+  .audit-event.cancellation::before { background: #E88B77; box-shadow: 0 0 6px #E88B77; }
+
+  @media (max-width: 760px) { .active-profile { order: 3; width: 100%; margin: .25rem 0 0; } .top .actions { margin-left: auto; } .audit-terminal { padding-block: 1.5rem; } }
+  @media (prefers-reduced-motion: reduce) { .gate-card { animation-duration: .01ms; } }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+  <div class="gate-card">
+    <p class="brand">T H E&nbsp; C A K E&nbsp; C O .</p>
+    <h1 id="gate-title">Menu Studio</h1>
+    <p class="sub">Sign in to manage the storefront collection.</p>
+    <form id="login-form" novalidate>
+      <div class="field employee-select">
+        <label class="label" for="employee-id">Employee ID</label>
+        <select class="input" id="employee-id" name="employeeId" required autocomplete="username" aria-describedby="login-error">
+          <option value="">Loading employee roster…</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label" for="password">Employee PIN</label>
+        <div class="password-control">
+          <input class="input" id="password" name="pin" type="password" autocomplete="current-password" required maxlength="256" aria-describedby="login-error">
+          <button class="password-visibility" id="password-visibility" type="button" aria-label="Show password" aria-pressed="false" title="Show password">
+            <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 3 18 18M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.7 10.7 0 0 1 12 5c6.4 0 10 7 10 7a16.8 16.8 0 0 1-3.1 3.9M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7c1.3 0 2.5-.3 3.5-.8"/></svg>
+          </button>
+        </div>
+        <p class="error" id="login-error" role="alert"></p>
+      </div>
+      <button class="btn btn-primary" type="submit" id="login-btn"><span class="spinner" aria-hidden="true"></span><span>Unlock</span></button>
+    </form>
+  </div>
+</div>
+
+<main class="wrap" id="app" hidden>
+  <header class="top">
+    <div>
+      <p class="brand">T H E&nbsp; C A K E&nbsp; C O .</p>
+      <h1>Menu Studio</h1>
+    </div>
+    <div class="active-profile" id="active-profile" hidden>
+      <img id="active-profile-photo" alt="Employee profile">
+      <div>
+        <p class="profile-label">Active Session</p>
+        <p class="profile-name" id="active-profile-name"></p>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to Light Luxury Edition" title="Switch to Light Luxury Edition">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"/></svg>
+      </button>
+      <a class="btn btn-ghost" href="/" target="_blank" rel="noopener">View Storefront</a>
+      <button class="btn btn-ghost" type="button" id="logout">Sign Out</button>
+    </div>
+  </header>
+
+  <div class="studio">
+    <section class="panel sticky studio-form" aria-labelledby="add-title">
+      <p class="eyebrow">New creation</p>
+      <h2 id="add-title">Add to the menu</h2>
+      <form class="form" id="item-form" novalidate>
+        <div class="field">
+          <label class="label" for="f-name">Cake name</label>
+          <input class="input" id="f-name" name="name" maxlength="80" required placeholder="e.g. Pistachio Rose Cake" aria-describedby="e-name">
+          <p class="error" id="e-name"></p>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label class="label" for="f-category">Category</label>
+            <select class="input" id="f-category" name="category" required aria-describedby="e-category"></select>
+            <p class="error" id="e-category"></p>
+          </div>
+          <div class="field">
+            <label class="label" for="f-price">Price (numbers only)</label>
+            <div class="price-wrap">
+              <span class="prefix" aria-hidden="true">₹</span>
+              <input class="input" id="f-price" name="price" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="7" autocomplete="off" placeholder="1500" aria-describedby="p-price e-price">
+            </div>
+            <p class="error" id="e-price"></p>
+          </div>
+        </div>
+        <div>
+          <p class="hint">Shows on the storefront as</p>
+          <p class="price-preview" id="p-price" aria-live="polite">Price on request</p>
+        </div>
+        <div class="field">
+          <label class="label" for="f-description">Short description</label>
+          <textarea class="input" id="f-description" name="description" maxlength="240" placeholder="What makes it special, in one or two lines" aria-describedby="c-description"></textarea>
+          <p class="hint" id="c-description">0 / 240</p>
+        </div>
+        <div class="field">
+          <label class="label" for="f-badge">Badge (optional)</label>
+          <input class="input" id="f-badge" name="badge" maxlength="24" placeholder="e.g. Signature, New, Bestseller">
+        </div>
+
+        <div class="field">
+          <span class="label">Photo</span>
+          <label class="drop" id="drop" for="f-file">
+            <input type="file" id="f-file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif,.jpg,.jpeg,.png,.webp,.gif,.avif" aria-label="Upload a cake photo">
+            <div class="drop-content">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+              <strong>Drop photo, paste (Ctrl+V), or tap to browse</strong>
+              <span>JPEG, PNG, WebP or GIF. Scaled automatically.</span>
+            </div>
+          </label>
+
+          <div class="preset-images-group">
+            <span class="preset-label">✧ Quick Curated Photos (1-Tap):</span>
+            <div class="preset-chips">
+              <button type="button" class="preset-chip" data-img="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=85">🍫 Chocolate Truffle</button>
+              <button type="button" class="preset-chip" data-img="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1200&q=85">❤️ Red Velvet</button>
+              <button type="button" class="preset-chip" data-img="https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&w=1200&q=85">🍓 Berry Gateau</button>
+              <button type="button" class="preset-chip" data-img="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=1200&q=85">🧁 Celebration Set</button>
+            </div>
+          </div>
+
+          <div class="or">or paste an image link</div>
+          <input class="input" id="f-url" type="url" inputmode="url" placeholder="https://… or data:image/…" autocomplete="off" aria-describedby="e-image">
+          <div class="preview" id="preview" hidden>
+            <img id="preview-img" alt="Selected cake photo preview" referrerpolicy="no-referrer">
+            <p id="preview-info"></p>
+            <button class="btn btn-ghost" type="button" id="clear-image" aria-label="Remove photo">Remove</button>
+          </div>
+          <p class="error" id="e-image"></p>
+        </div>
+
+        <div class="notice" id="form-notice" role="alert"></div>
+        <button class="btn btn-primary" type="submit" id="save-btn"><span class="spinner" aria-hidden="true"></span><span>Publish to Storefront</span></button>
+      </form>
+    </section>
+
+    <aside class="panel history-panel" aria-labelledby="history-title">
+      <div class="history-head">
+        <div>
+          <p class="eyebrow">Local memory</p>
+          <h2 id="history-title">Last Added</h2>
+        </div>
+        <span class="history-count" id="history-count" aria-live="polite">0 / 6</span>
+      </div>
+      <p class="hint" style="margin-top:.35rem">1-tap fill from this browser</p>
+      <ul class="recent-list" id="recent-list" aria-label="Recently added cakes">
+        <li class="history-empty" id="history-empty">Published cakes appear here for quick reuse.</li>
+      </ul>
+    </aside>
+
+    <section class="studio-inventory" aria-labelledby="live-title">
+      <div class="grid-head">
+        <div>
+          <p class="eyebrow">Live on the storefront</p>
+          <h2 id="live-title" style="font-size:1.9rem">Current collection</h2>
+        </div>
+        <p class="hint" id="count" aria-live="polite"></p>
+      </div>
+      <div class="notice" id="grid-notice" role="alert" style="margin-top:1rem"></div>
+      <div class="grid" id="grid"></div>
+    </section>
+  </div>
+
+  <!-- Peak-Hour Order Tracking & Swap-Prevention Verification Deck -->
+  <section class="orders-deck" id="orders-deck" aria-labelledby="orders-title">
+    <header class="orders-head">
+      <div>
+        <p class="eyebrow">Zero-error custom distribution protocol</p>
+        <h2 id="orders-title">✧ Peak-Hour Swap-Prevention Deck</h2>
+      </div>
+      <div class="orders-head-actions">
+        <span class="orders-status-pill" id="orders-stats">Syncing live orders…</span>
+        <button type="button" class="btn btn-ghost" id="new-order-toggle-btn" aria-expanded="false" aria-controls="orders-booking-drawer">
+          <span>+ Log Custom Booking</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="notice" id="orders-notice" role="alert" style="margin-top:1rem"></div>
+
+    <!-- Collapsible Quick Booking Form -->
+    <div class="orders-booking-drawer" id="orders-booking-drawer" hidden>
+      <form id="new-order-form" novalidate>
+        <p class="eyebrow" style="color:var(--gold-deep); margin-bottom:.5rem;">Quick custom booking intake</p>
+        <div class="orders-booking-grid">
+          <div class="field">
+            <label class="label" for="ord-item">Target Cake Item Name *</label>
+            <input class="input" id="ord-item" name="itemName" required placeholder="e.g. Belgian Chocolate Truffle Cake">
+          </div>
+          <div class="field">
+            <label class="label" for="ord-phone">Customer WhatsApp Line</label>
+            <input class="input" id="ord-phone" name="customerPhone" placeholder="+91 87143 33247">
+          </div>
+          <div class="field">
+            <label class="label" for="ord-weight">Weight Variant</label>
+            <select class="input" id="ord-weight" name="weight">
+              <option value="1.0 kg">1.0 kg</option>
+              <option value="1.5 kg">1.5 kg</option>
+              <option value="2.0 kg">2.0 kg</option>
+              <option value="3.0 kg">3.0 kg</option>
+              <option value="Set of 6">Set of 6</option>
+              <option value="Custom Size">Custom Size</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="label" for="ord-deadline">Target Completion Deadline</label>
+            <input class="input" id="ord-deadline" name="deadline" placeholder="e.g. 21:30 or Today 9:00 PM">
+          </div>
+        </div>
+        <div class="field" style="margin-top:1rem">
+          <label class="label" for="ord-message">Specific Custom Lettering / Frosting Messaging</label>
+          <input class="input" id="ord-message" name="customMessage" placeholder="e.g. Happy 25th Anniversary Maya & Arjun">
+        </div>
+        <div style="display:flex; gap:.75rem; margin-top:1.25rem; justify-content:flex-end">
+          <button type="button" class="btn btn-ghost" id="cancel-order-btn"><span>Cancel</span></button>
+          <button type="submit" class="btn btn-primary" id="create-order-btn"><span class="spinner" aria-hidden="true"></span><span>Dispatch to Deck</span></button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Active Orders Grid -->
+    <div class="orders-grid" id="orders-grid" aria-live="polite">
+      <p class="orders-empty">Connecting to swap-prevention order matrix…</p>
+    </div>
+  </section>
+
+  <section class="audit-terminal" aria-labelledby="audit-title">
+    <header class="audit-head">
+      <div>
+        <p class="eyebrow">Internal tracking ledger</p>
+        <h2 id="audit-title">✧ Live Employee Attendance &amp; Audit Sheet</h2>
+      </div>
+      <p class="audit-status" id="audit-status" role="status" aria-live="polite">Waiting for session verification…</p>
+    </header>
+    <div class="audit-table-wrap">
+      <table class="audit-table">
+        <thead><tr><th scope="col">Timestamp</th><th scope="col">Employee</th><th scope="col">Role</th><th scope="col">Action</th></tr></thead>
+        <tbody id="audit-rows"><tr><td class="audit-empty" colspan="4">Sign in with an authorized account to view attendance.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap studio-footer" aria-label="Business information">
+  <div class="business-grid">
+    <section class="business-col" aria-labelledby="business-name">
+      <h2 id="business-name">Studio</h2>
+      <p>The Cake Co. (TCC)</p>
+    </section>
+    <section class="business-col" aria-labelledby="business-hours">
+      <h2 id="business-hours">Hours</h2>
+      <p>Open Daily: 10:00 AM — 9:00 PM | Late Night Delivery: Until 11:30 PM</p>
+      <a href="https://wa.me/918714333247" target="_blank" rel="noopener noreferrer">Book on WhatsApp: +91 87143 33247</a>
+    </section>
+    <section class="business-col" aria-labelledby="business-address">
+      <h2 id="business-address">Visit</h2>
+      <address>Mattoor Junction, Sree Sankara College Rd, near Mahatma Bookstall, Mattoor, Kalady, Keralam 683574</address>
+      <a href="tel:+918714333247">Call +91 87143 33247</a>
+    </section>
+  </div>
+  <p class="studio-credit">Designed &amp; Developed by Sai Krishna</p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-text"></span><button type="button" id="toast-undo">Undo</button></div>
+
+<div class="exit-guard-backdrop" id="exit-guard-modal" role="alertdialog" aria-modal="true" aria-labelledby="exit-guard-title" aria-describedby="exit-guard-desc" hidden>
+  <div class="exit-guard-card">
+    <div class="exit-guard-badge">⚠️ Active Session Guard</div>
+    <h2 id="exit-guard-title">Mandatory Exit Verification</h2>
+    <p class="exit-guard-text" id="exit-guard-desc">
+      ⚠️ Warning: You have an active management session open. A formal system Logout is mandatory to close the workspace and safely log your exit timestamp.
+    </p>
+    <div class="exit-guard-actions">
+      <button type="button" class="btn btn-primary" id="exit-guard-confirm-logout">
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Formal System Logout</span>
+      </button>
+      <button type="button" class="btn btn-ghost" id="exit-guard-stay">
+        <span>Stay in Workspace</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script nonce="__CSP_NONCE__">
+(() => {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+  const inr = new Intl.NumberFormat("en-IN");
+  const MAX_EDGE = 1400;
+  const TARGET_BYTES = 850_000;
+  const MAX_SOURCE_BYTES = 15 * 1024 * 1024;
+
+  const state = { categories: [], items: [], image: "", undo: null, toastTimer: 0, recentHistory: [], employees: [], auditTimer: 0, auditBusy: false, orders: [], ordersTimer: 0, ordersBusy: false, lastOrdersFingerprint: "", activeEmployee: null, exitBeaconSent: false, logoutInProgress: false };
+
+  function initTheme() {
+    const root = document.documentElement;
+    const button = $("#theme-toggle");
+    if (!button) return;
+    const apply = (theme) => {
+      const light = theme === "light";
+      root.dataset.theme = light ? "light" : "dark";
+      const label = `Switch to ${light ? "Midnight Dark" : "Light Luxury"} Edition`;
+      button.setAttribute("aria-label", label);
+      button.title = label;
+    };
+    apply(root.dataset.theme);
+    button.addEventListener("click", () => {
+      const theme = root.dataset.theme === "light" ? "dark" : "light";
+      apply(theme);
+      try { localStorage.setItem("tcc-theme", theme); }
+      catch (err) { console.warn("[TCC] theme preference could not be saved:", err); }
+    });
+  }
+
+  initTheme();
+
+  function el(tag, attrs = {}, children = []) {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v === undefined || v === null || v === false) continue;
+      if (k === "class") node.className = v;
+      else if (k === "text") node.textContent = v;
+      else node.setAttribute(k, v);
+    }
+    children.forEach((c) => c && node.appendChild(c));
+    return node;
+  }
+
+  function notice(target, type, message) {
+    const n = $(target);
+    n.className = "notice";
+    n.textContent = message || "";
+    if (message) n.classList.add("show", type === "ok" ? "ok" : "err");
+  }
+
+  function setBusy(btn, busy) {
+    btn.setAttribute("aria-busy", String(busy));
+    btn.disabled = busy;
+  }
+
+  async function api(path, { method = "GET", body } = {}) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 20000);
+    try {
+      const res = await fetch(path, {
+        method,
+        headers: body ? { "Content-Type": "application/json", Accept: "application/json" } : { Accept: "application/json" },
+        body: body ? JSON.stringify(body) : undefined,
+        credentials: "same-origin",
+        signal: controller.signal,
+      });
+      let data = null;
+      try { data = await res.json(); } catch { data = null; }
+      if (res.status === 401 && path !== "/api/admin/login") { lockOut("Your session ended. Please sign in again."); }
+      return { ok: res.ok, status: res.status, data };
+    } catch (err) {
+      const message = err.name === "AbortError" ? "The server took too long to respond." : "Couldn't reach the server. Check your internet connection.";
+      return { ok: false, status: 0, data: { message } };
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  /* ---------------- Auth ---------------- */
+  function lockOut(message) {
+    clearInterval(state.auditTimer);
+    state.auditTimer = 0;
+    clearInterval(state.ordersTimer);
+    state.ordersTimer = 0;
+    state.activeEmployee = null;
+    state.exitBeaconSent = false;
+    state.logoutInProgress = false;
+    hideExitGuardModal();
+    $("#app").hidden = true;
+    $("#gate").hidden = false;
+    $("#active-profile").hidden = true;
+    $("#login-error").textContent = message || "";
+    $("#password").value = "";
+    setPasswordVisibility(false);
+    setTimeout(() => $("#password").focus(), 50);
+  }
+
+  function setPasswordVisibility(visible) {
+    const input = $("#password");
+    const button = $("#password-visibility");
+    if (!input || !button) return;
+    input.type = visible ? "text" : "password";
+    button.setAttribute("aria-pressed", String(visible));
+    button.setAttribute("aria-label", visible ? "Hide password" : "Show password");
+    button.title = visible ? "Hide password" : "Show password";
+  }
+
+  $("#password").addEventListener("input", () => {
+    $("#login-error").textContent = "";
+    $("#password").removeAttribute("aria-invalid");
+  });
+
+  $("#password-visibility").addEventListener("mousedown", (event) => event.preventDefault());
+  $("#password-visibility").addEventListener("click", () => {
+    const input = $("#password");
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const visible = input.type !== "text";
+    setPasswordVisibility(visible);
+    input.focus({ preventScroll: true });
+    if (start !== null && end !== null) input.setSelectionRange(start, end);
+  });
+
+  async function loadEmployeeRoster() {
+    const select = $("#employee-id");
+    try {
+      const res = await api("/api/admin/employees");
+      if (!res.ok || !res.data || !Array.isArray(res.data.employees)) throw new Error((res.data && res.data.message) || "Employee roster unavailable.");
+      state.employees = res.data.employees;
+      select.replaceChildren(el("option", { value: "", text: "Choose your employee ID" }));
+      state.employees.forEach((employee) => select.appendChild(el("option", { value: employee.id, text: `${employee.name} · ${employee.id}` })));
+      select.disabled = false;
+      return true;
+    } catch (err) {
+      select.replaceChildren(el("option", { value: "", text: "Employee roster unavailable" }));
+      select.disabled = true;
+      $("#login-error").textContent = err.message || "Couldn't load the employee roster.";
+      return false;
+    }
+  }
+
+  function renderAuditRows(entries) {
+    const body = $("#audit-rows");
+    if (!Array.isArray(entries) || entries.length === 0) {
+      body.replaceChildren(el("tr", {}, [el("td", { class: "audit-empty", colspan: "4", text: "No attendance events have been recorded yet." })]));
+      return;
+    }
+    body.replaceChildren(...entries.map((entry) => {
+      const isVerification = entry.event === "order_verified" || entry.event === "verification";
+      const isCancellation = entry.event === "order_cancelled" || entry.event === "cancellation";
+      const eventLabel = isVerification ? "Verification Event" : isCancellation ? "Emergency Cancel" : entry.event === "login" ? "Login Event" : "Logout Event";
+      const eventClass = `audit-event${isVerification ? " verification" : isCancellation ? " cancellation" : entry.event === "logout" ? " logout" : ""}`;
+      const eventCell = el("span", { class: eventClass, text: eventLabel });
+      return el("tr", {}, [
+        el("td", { class: "audit-time", text: entry.timestamp }),
+        el("td", { class: "audit-employee" }, [
+          el("span", { text: entry.employeeName }),
+          el("span", { class: "audit-id", text: entry.employeeId }),
+        ]),
+        el("td", { text: entry.role }),
+        el("td", {}, [eventCell]),
+      ]);
+    }));
+  }
+
+  async function refreshAudit() {
+    if (state.auditBusy) return;
+    state.auditBusy = true;
+    try {
+      const res = await api("/api/admin/audit");
+      if (!res.ok || !res.data || !Array.isArray(res.data.entries)) {
+        $("#audit-status").textContent = (res.data && res.data.message) || "Attendance ledger unavailable.";
+        return;
+      }
+      renderAuditRows(res.data.entries);
+      $("#audit-status").textContent = `Updated ${new Date().toLocaleTimeString()}`;
+    } catch (err) {
+      console.error("[TCC] audit refresh failed:", err);
+      $("#audit-status").textContent = "Attendance ledger unavailable.";
+    } finally {
+      state.auditBusy = false;
+    }
+  }
+
+  function startAuditPolling(employee) {
+    clearInterval(state.auditTimer);
+    state.auditTimer = 0;
+    if (!employee || !["Admin", "Studio Manager"].includes(employee.role)) {
+      renderAuditRows([]);
+      $("#audit-status").textContent = "Attendance sheet access is restricted to administrators and studio managers.";
+      return;
+    }
+    void refreshAudit();
+    state.auditTimer = window.setInterval(() => { void refreshAudit(); }, 2000);
+  }
+
+  function renderActiveProfile(employee) {
+    if (!employee) return;
+    $("#active-profile-photo").src = employee.photo;
+    $("#active-profile-photo").alt = `${employee.name} profile`;
+    $("#active-profile-name").textContent = `${employee.name} (${employee.id})`;
+    $("#active-profile").hidden = false;
+  }
+
+  async function unlock(employee) {
+    if (!employee || typeof employee.id !== "string" || typeof employee.name !== "string") {
+      lockOut("Your employee session could not be verified. Please sign in again.");
+      return;
+    }
+    state.activeEmployee = { id: employee.id, name: employee.name, role: employee.role, photo: employee.photo };
+    state.exitBeaconSent = false;
+    state.logoutInProgress = false;
+    hideExitGuardModal();
+    renderActiveProfile(employee);
+    $("#gate").hidden = true;
+    $("#app").hidden = false;
+    startAuditPolling(employee);
+    startOrderPollingSync();
+    await loadMenu();
+    $("#f-name").focus();
+  }
+
+  $("#login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = $("#login-btn");
+    const employeeId = $("#employee-id").value;
+    const pin = $("#password").value;
+    $("#login-error").textContent = "";
+    if (!employeeId || !pin) {
+      $("#login-error").textContent = "Choose your employee ID and enter your PIN.";
+      if (!employeeId) $("#employee-id").setAttribute("aria-invalid", "true");
+      if (!pin) $("#password").setAttribute("aria-invalid", "true");
+      return;
+    }
+    setBusy(btn, true);
+    const res = await api("/api/admin/login", { method: "POST", body: { employeeId, pin } });
+    setBusy(btn, false);
+    if (res.ok) { $("#password").value = ""; setPasswordVisibility(false); await unlock(res.data.employee); return; }
+    $("#login-error").textContent = (res.data && res.data.message) || "Sign-in failed. Please try again.";
+    $("#password").setAttribute("aria-invalid", "true");
+    $("#password").select();
+  });
+
+  $("#employee-id").addEventListener("change", () => {
+    $("#login-error").textContent = "";
+    $("#employee-id").removeAttribute("aria-invalid");
+  });
+
+  function showExitGuardModal() {
+    const modal = $("#exit-guard-modal");
+    if (!modal || !state.activeEmployee || state.logoutInProgress) return;
+    modal.hidden = false;
+    const confirmBtn = $("#exit-guard-confirm-logout");
+    if (confirmBtn) confirmBtn.focus();
+  }
+
+  function hideExitGuardModal() {
+    const modal = $("#exit-guard-modal");
+    if (modal) modal.hidden = true;
+  }
+
+  async function performFormalLogout(reason = "manual") {
+    state.logoutInProgress = true;
+    hideExitGuardModal();
+    const employee = state.activeEmployee;
+    const headerBtn = $("#logout");
+    const modalBtn = $("#exit-guard-confirm-logout");
+    if (headerBtn) setBusy(headerBtn, true);
+    if (modalBtn) setBusy(modalBtn, true);
+
+    const res = await api("/api/admin/logout", {
+      method: "POST",
+      body: {
+        employeeId: employee && employee.id,
+        employeeName: employee && employee.name,
+        reason
+      }
+    });
+
+    if (headerBtn) setBusy(headerBtn, false);
+    if (modalBtn) setBusy(modalBtn, false);
+
+    if (res.ok || res.status === 500) {
+      lockOut(res.status === 500 ? "Session ended, but the audit service reported a logging error." : "");
+      return;
+    }
+    state.logoutInProgress = false;
+    notice("#grid-notice", "err", (res.data && res.data.message) || "Sign-out failed. Your session is still active.");
+  }
+
+  $("#logout").addEventListener("click", () => performFormalLogout("manual_header_button"));
+
+  const exitGuardConfirmBtn = $("#exit-guard-confirm-logout");
+  if (exitGuardConfirmBtn) {
+    exitGuardConfirmBtn.addEventListener("click", () => performFormalLogout("exit_guard_modal"));
+  }
+
+  const exitGuardStayBtn = $("#exit-guard-stay");
+  if (exitGuardStayBtn) {
+    exitGuardStayBtn.addEventListener("click", hideExitGuardModal);
+  }
+
+  const EXIT_WARNING = "⚠️ Warning: You have an active management session open. A formal system Logout is mandatory to close the workspace and safely log your exit timestamp.";
+
+  /* ---------------- Native Window Interceptor ---------------- */
+  window.addEventListener("beforeunload", (event) => {
+    if (!state.activeEmployee || state.logoutInProgress) return;
+    showExitGuardModal();
+    event.preventDefault();
+    event.returnValue = EXIT_WARNING;
+    return EXIT_WARNING;
+  });
+
+  /* ---------------- Fail-Safe Background Beacon ---------------- */
+  function sendExitBeacon(employee) {
+    if (!employee || state.exitBeaconSent || state.logoutInProgress) return;
+    state.exitBeaconSent = true;
+    const stringPayload = JSON.stringify({
+      employeeId: employee.id,
+      employeeName: employee.name,
+      role: employee.role,
+      reason: "accidental_window_closure",
+      timestamp: new Date().toISOString()
+    });
+
+    let sent = false;
+    if (typeof navigator !== "undefined" && typeof navigator.sendBeacon === "function") {
+      try {
+        sent = navigator.sendBeacon("/api/admin/logout", stringPayload);
+        if (!sent) {
+          sent = navigator.sendBeacon("/api/admin/logout", new Blob([stringPayload], { type: "text/plain" }));
+        }
+      } catch (err) {
+        sent = false;
+      }
+    }
+
+    if (!sent && typeof fetch === "function") {
+      try {
+        void fetch("/api/admin/logout", {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: stringPayload,
+          credentials: "same-origin",
+          keepalive: true
+        }).catch((err) => console.warn("[TCC] exit beacon fallback fetch error:", err));
+      } catch (err) {
+        console.error("[TCC] exit beacon could not be dispatched:", err);
+      }
+    }
+  }
+
+  window.addEventListener("pagehide", () => {
+    sendExitBeacon(state.activeEmployee);
+  });
+
+  window.addEventListener("unload", () => {
+    sendExitBeacon(state.activeEmployee);
+  });
+
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted) return;
+    api("/api/admin/session").then((res) => {
+      if (res.ok && res.data && res.data.authenticated) return unlock(res.data.employee);
+      lockOut("Your session has ended. Please sign in again.");
+    }).catch((err) => {
+      console.error("[TCC] restored session check failed:", err);
+      lockOut("Couldn't verify your session. Please sign in again.");
+    });
+  });
+
+  /* ---------------- Peak-Hour Order Tracking & Swap-Prevention ---------------- */
+  function renderOrders(orders) {
+    const grid = $("#orders-grid");
+    const stats = $("#orders-stats");
+    if (!grid) return;
+    const pending = orders.filter((o) => !o.verified).length;
+    const cleared = orders.length - pending;
+    if (stats) {
+      stats.textContent = `${pending} Pending Verification · ${cleared} Dispatched`;
+    }
+
+    if (!Array.isArray(orders) || orders.length === 0) {
+      grid.replaceChildren(el("p", { class: "orders-empty", text: "No custom orders active in the peak-hour queue." }));
+      return;
+    }
+
+    grid.replaceChildren(...orders.map((order) => {
+      const isVerified = Boolean(order.verified);
+      const card = el("article", { class: `order-card${isVerified ? " is-verified" : ""}` });
+
+      // Header with bright gold boundary around Order Token ID & deadline chip + emergency cancel button
+      const tokenBadge = el("span", { class: "order-token-badge", text: order.id });
+      const deadlineChip = el("span", { class: "order-chip", text: `🕒 ${order.deadline}` });
+      const cancelBtn = el("button", {
+        class: "order-cancel-btn",
+        type: "button",
+        title: `Emergency Cancel Order ${order.id}`,
+        "aria-label": `Emergency Cancel Order ${order.id}`
+      }, [
+        el("span", { text: "✕ Cancel" })
+      ]);
+      cancelBtn.addEventListener("click", () => cancelOrder(order.id, order.itemName, cancelBtn));
+      const rightGroup = el("div", { style: "display:flex; align-items:center; gap:.45rem; flex-wrap:wrap; justify-content:flex-end;" }, [deadlineChip, cancelBtn]);
+      const cardHeader = el("div", { class: "order-card-header" }, [tokenBadge, rightGroup]);
+
+      // Title & Weight
+      const title = el("h3", { class: "order-item-name", text: order.itemName });
+      const weightChip = el("span", { class: "order-chip", text: `⚖ ${order.weight || "1.0 kg"}` });
+
+      // WhatsApp Contact Line
+      const cleanPhone = (order.customerPhone || "").replace(/\D/g, "");
+      const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hello! Update regarding Order ${order.id} (${order.itemName}) from The Cake Co. (TCC):`)}`;
+      const waLink = el("a", { class: "order-wa-link", href: waUrl, target: "_blank", rel: "noopener noreferrer" }, [
+        el("span", { text: `💬 WhatsApp: ${order.customerPhone}` })
+      ]);
+      const metaRow = el("div", { class: "order-meta-row" }, [weightChip, waLink]);
+
+      // Specific Custom Lettering/Frosting Messaging callout
+      const customMsg = el("div", { class: "order-custom-msg" }, [
+        el("strong", { text: "Custom Lettering & Messaging" }),
+        el("p", { text: order.customMessage || "No custom message requested" })
+      ]);
+
+      const bodyGroup = el("div", { style: "display:grid; gap:.85rem;" }, [title, metaRow, customMsg]);
+
+      // Footer with Status Badge, Verify Action, and Prominent Emergency Cancel Action
+      let footer;
+      const cancelActionBtn = el("button", {
+        class: "btn order-cancel-action-btn",
+        type: "button",
+        title: `Emergency Cancel Order ${order.id}`,
+        "aria-label": `Emergency Cancel Order ${order.id}`
+      }, [
+        el("span", { class: "spinner", "aria-hidden": "true" }),
+        el("span", { text: isVerified ? "✕ Emergency Cancel & Void" : "✕ Emergency Cancel Order" })
+      ]);
+      cancelActionBtn.addEventListener("click", () => cancelOrder(order.id, order.itemName, cancelActionBtn));
+
+      if (isVerified) {
+        const badge = el("div", { class: "order-status-badge verified", text: "✓ Verified & Cleared for Pickup" });
+        const info = el("p", { class: "order-verified-info", text: `Cleared by ${order.verifiedBy || "Staff"} · ${order.verifiedAt || ""}` });
+        footer = el("div", { style: "display:grid; gap:.5rem;" }, [badge, info, cancelActionBtn]);
+      } else {
+        const badge = el("div", { class: "order-status-badge pending", text: "⚠️ Pending Verification" });
+        const verifyBtn = el("button", { class: "btn order-verify-btn", type: "button" }, [
+          el("span", { class: "spinner", "aria-hidden": "true" }),
+          el("span", { text: "Verify Order Details" })
+        ]);
+        verifyBtn.addEventListener("click", () => verifyOrder(order.id, verifyBtn));
+        footer = el("div", { style: "display:grid; gap:.55rem;" }, [badge, verifyBtn, cancelActionBtn]);
+      }
+
+      card.appendChild(cardHeader);
+      card.appendChild(bodyGroup);
+      card.appendChild(footer);
+      return card;
+    }));
+  }
+
+  async function cancelOrder(orderId, itemName, btn) {
+    const reasonPrompt = window.prompt(`EMERGENCY ORDER CANCELLATION:\n\nAre you sure you want to cancel and delete Order ${orderId} (${itemName})?\n\nEnter reason for cancellation (or leave blank for Customer Emergency):`, "Customer Emergency Cancel");
+    if (reasonPrompt === null) return;
+    const reason = reasonPrompt.trim() || "Customer Emergency Cancel";
+
+    if (btn) setBusy(btn, true);
+    try {
+      const res = await api(`/api/orders/${encodeURIComponent(orderId)}`, {
+        method: "DELETE",
+        body: {
+          employeeId: state.activeEmployee && state.activeEmployee.id,
+          employeeName: state.activeEmployee && state.activeEmployee.name,
+          reason
+        }
+      });
+      if (btn) setBusy(btn, false);
+      if (res.ok) {
+        notice("#orders-notice", "ok", `Order ${orderId} (${itemName}) was emergency cancelled and removed.`);
+        await fetchOrders();
+        void refreshAudit();
+      } else {
+        notice("#orders-notice", "err", (res.data && res.data.message) || "Could not cancel order.");
+      }
+    } catch (err) {
+      if (btn) setBusy(btn, false);
+      notice("#orders-notice", "err", "Network error while cancelling order.");
+    }
+  }
+
+  async function verifyOrder(orderId, btn) {
+    if (btn) setBusy(btn, true);
+    try {
+      const res = await api(`/api/orders/${encodeURIComponent(orderId)}/verify`, {
+        method: "PATCH",
+        body: {
+          employeeId: state.activeEmployee && state.activeEmployee.id,
+          employeeName: state.activeEmployee && state.activeEmployee.name
+        }
+      });
+      if (btn) setBusy(btn, false);
+      if (res.ok && res.data && res.data.order) {
+        notice("#orders-notice", "ok", `Order ${orderId} verified and cleared for customer pickup.`);
+        await fetchOrders();
+        void refreshAudit();
+      } else {
+        notice("#orders-notice", "err", (res.data && res.data.message) || "Verification could not be recorded.");
+      }
+    } catch (err) {
+      if (btn) setBusy(btn, false);
+      notice("#orders-notice", "err", "Network error while verifying order.");
+    }
+  }
+
+  async function fetchOrders() {
+    if (state.ordersBusy) return;
+    state.ordersBusy = true;
+    try {
+      const res = await api(`/api/orders?cb=${Date.now()}`);
+      if (res.ok && res.data && Array.isArray(res.data.orders)) {
+        const freshHash = JSON.stringify(res.data.orders);
+        if (freshHash !== state.lastOrdersFingerprint) {
+          state.lastOrdersFingerprint = freshHash;
+          state.orders = res.data.orders;
+          renderOrders(state.orders);
+        }
+      }
+    } catch (err) {
+      console.warn("[TCC] orders sync failed:", err);
+    } finally {
+      state.ordersBusy = false;
+    }
+  }
+
+  function startOrderPollingSync() {
+    clearInterval(state.ordersTimer);
+    void fetchOrders();
+    state.ordersTimer = window.setInterval(() => { void fetchOrders(); }, 2000);
+  }
+
+  // Booking drawer controls
+  const newOrderToggleBtn = $("#new-order-toggle-btn");
+  const newOrderDrawer = $("#orders-booking-drawer");
+  const cancelOrderBtn = $("#cancel-order-btn");
+  if (newOrderToggleBtn && newOrderDrawer) {
+    newOrderToggleBtn.addEventListener("click", () => {
+      const isOpen = !newOrderDrawer.hidden;
+      newOrderDrawer.hidden = isOpen;
+      newOrderToggleBtn.setAttribute("aria-expanded", String(!isOpen));
+      if (!isOpen) $("#ord-item")?.focus();
+    });
+  }
+  if (cancelOrderBtn && newOrderDrawer) {
+    cancelOrderBtn.addEventListener("click", () => {
+      newOrderDrawer.hidden = true;
+      newOrderToggleBtn?.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  $("#new-order-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = $("#create-order-btn");
+    setBusy(btn, true);
+    notice("#orders-notice", "err", "");
+    const payload = {
+      itemName: $("#ord-item").value.trim(),
+      customerPhone: $("#ord-phone").value.trim(),
+      weight: $("#ord-weight").value.trim(),
+      deadline: $("#ord-deadline").value.trim(),
+      customMessage: $("#ord-message").value.trim(),
+    };
+    if (!payload.itemName) {
+      setBusy(btn, false);
+      notice("#orders-notice", "err", "Please specify the target cake item name.");
+      $("#ord-item").focus();
+      return;
+    }
+    const res = await api("/api/orders", { method: "POST", body: payload });
+    setBusy(btn, false);
+    if (res.ok && res.data && res.data.order) {
+      e.target.reset();
+      newOrderDrawer.hidden = true;
+      newOrderToggleBtn?.setAttribute("aria-expanded", "false");
+      notice("#orders-notice", "ok", `Order ${res.data.order.id} registered and added to verification deck.`);
+      await fetchOrders();
+    } else {
+      notice("#orders-notice", "err", (res.data && res.data.message) || "Could not log custom booking.");
+    }
+  });
+
+  /* ---------------- Menu data ---------------- */
+  const unitFor = (categoryId) => (state.categories.find((c) => c.id === categoryId) || { unit: "kg" }).unit;
+  const labelFor = (categoryId) => (state.categories.find((c) => c.id === categoryId) || { label: categoryId }).label;
+  const formatPrice = (digits, categoryId) => {
+    const n = Number.parseInt(digits, 10);
+    return Number.isInteger(n) && n > 0 ? `₹${inr.format(n)}/${unitFor(categoryId)}` : null;
+  };
+  const HISTORY_KEY = "tcc_recent_history";
+  const MAX_HISTORY = 6;
+
+  function safeHistoryImage(value) {
+    if (typeof value !== "string" || value.length > 2048) return "";
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" && !url.username && !url.password ? url.href : "";
+    } catch {
+      return "";
+    }
+  }
+
+  function normaliseHistoryEntry(item) {
+    if (!item || typeof item !== "object" || typeof item.name !== "string" || typeof item.category !== "string") return null;
+    return {
+      id: typeof item.id === "string" ? item.id.slice(0, 64) : "",
+      name: item.name.slice(0, 80),
+      category: item.category.slice(0, 64),
+      description: typeof item.description === "string" ? item.description.slice(0, 240) : "",
+      price: Number.isInteger(item.price) && item.price > 0 ? item.price : null,
+      badge: typeof item.badge === "string" ? item.badge.slice(0, 24) : "",
+      image: safeHistoryImage(item.image),
+    };
+  }
+
+  function renderRecentHistory() {
+    const list = $("#recent-list");
+    const count = $("#history-count");
+    if (!list || !count) return;
+    count.textContent = `${state.recentHistory.length} / ${MAX_HISTORY}`;
+    if (!state.recentHistory.length) {
+      list.replaceChildren(el("li", { class: "history-empty", text: "Published cakes appear here for quick reuse." }));
+      return;
+    }
+    list.replaceChildren(...state.recentHistory.map((item, index) => {
+      const entry = el("li", { class: "recent-entry" });
+      const price = Number.isInteger(item.price) ? `₹${inr.format(item.price)}/${unitFor(item.category)}` : "Price on request";
+      const button = el("button", {
+        class: "recent-button",
+        type: "button",
+        "aria-label": `Fill form with ${item.name}${item.price ? `, ₹${inr.format(item.price)}` : ""}`,
+      }, [
+        el("span", { class: "recent-name", text: item.name }),
+        el("span", { class: "recent-meta" }, [
+          el("span", { text: labelFor(item.category) }),
+          el("span", { text: price }),
+        ]),
+        item.description ? el("span", { class: "recent-description", text: item.description }) : null,
+      ]);
+      button.addEventListener("click", () => autoFillUploaderForm(item));
+      entry.appendChild(button);
+      entry.style.setProperty("--history-order", String(index));
+      return entry;
+    }));
+  }
+
+  function loadRecentHistory() {
+    try {
+      const raw = localStorage.getItem(HISTORY_KEY) || "[]";
+      const stored = JSON.parse(raw);
+      state.recentHistory = Array.isArray(stored) ? stored.map(normaliseHistoryEntry).filter(Boolean).slice(0, MAX_HISTORY) : [];
+      const normalised = JSON.stringify(state.recentHistory);
+      if (normalised !== raw) {
+        try { localStorage.setItem(HISTORY_KEY, normalised); }
+        catch (err) { console.warn("[TCC] trimmed recent history could not be saved:", err); }
+      }
+    } catch (err) {
+      state.recentHistory = [];
+      console.warn("[TCC] recent history could not be loaded:", err);
+    }
+    renderRecentHistory();
+  }
+
+  function rememberRecent(item) {
+    const saved = normaliseHistoryEntry(item);
+    if (!saved) return;
+    state.recentHistory.unshift(saved);
+    state.recentHistory = state.recentHistory.slice(0, MAX_HISTORY);
+    renderRecentHistory();
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(state.recentHistory)); }
+    catch (err) { console.warn("[TCC] recent history could not be saved:", err); }
+  }
+
+  function autoFillUploaderForm(item) {
+    const name = $("#f-name");
+    const category = $("#f-category");
+    const description = $("#f-description");
+    const price = $("#f-price");
+    const badge = $("#f-badge");
+    name.value = item.name;
+    category.value = item.category;
+    description.value = item.description || "";
+    price.value = Number.isInteger(item.price) ? String(item.price) : "";
+    badge.value = item.badge || "";
+    $("#c-description").textContent = `${description.value.length} / 240`;
+    [name, category, description, price].forEach((field) => field.removeAttribute("aria-invalid"));
+    $("#e-name").textContent = "";
+    $("#e-category").textContent = "";
+    $("#e-price").textContent = "";
+    $("#e-image").textContent = "";
+    const image = safeHistoryImage(item.image);
+    if (image) {
+      state.image = image;
+      $("#f-file").value = "";
+      $("#f-url").value = image;
+      showPreview(image, "Restored saved image link");
+    } else {
+      clearImage();
+    }
+    updatePreview();
+    const populated = [name, category, price, description, badge, $("#f-url")];
+    $("#item-form").scrollIntoView({ behavior: "smooth", block: "start" });
+    name.focus({ preventScroll: true });
+    populated.forEach((field) => {
+      field.classList.add("history-populated");
+      window.setTimeout(() => field.classList.remove("history-populated"), 1250);
+    });
+    notice("#form-notice", "ok", `Loaded “${item.name}” from recent history. Review and publish when ready.`);
+  }
+
+  async function loadMenu() {
+    notice("#grid-notice", "err", "");
+    const res = await api("/api/menu");
+    if (!res.ok || !res.data || !Array.isArray(res.data.items)) {
+      notice("#grid-notice", "err", (res.data && res.data.message) || "Couldn't load the menu. Please refresh the page.");
+      return;
+    }
+    state.categories = res.data.categories;
+    state.items = res.data.items;
+    loadRecentHistory();
+    const select = $("#f-category");
+    if (!select.options.length) {
+      select.appendChild(el("option", { value: "", text: "Choose a category" }));
+      state.categories.forEach((c) => select.appendChild(el("option", { value: c.id, text: `${c.label} (per ${c.unit})` })));
+    }
+    renderGrid();
+  }
+
+  function renderGrid() {
+    const grid = $("#grid");
+    $("#count").textContent = `${state.items.length} ${state.items.length === 1 ? "item" : "items"}`;
+    if (!state.items.length) {
+      grid.replaceChildren(el("p", { class: "empty", text: "The menu is empty. Add your first creation." }));
+      return;
+    }
+    grid.replaceChildren(...state.items.map((item) => {
+      const thumb = el("div", { class: "thumb" });
+      if (item.image) {
+        const img = el("img", { alt: item.name, loading: "lazy" });
+        img.addEventListener("error", () => thumb.replaceChildren(el("span", { class: "noimg", text: "Image unavailable" })), { once: true });
+        img.src = item.image;
+        thumb.appendChild(img);
+      } else {
+        thumb.appendChild(el("span", { class: "noimg", text: "Illustration shown" }));
+      }
+      const del = el("button", { class: "del", type: "button", "aria-label": `Delete ${item.name}` });
+      del.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>';
+      del.addEventListener("click", () => removeItem(item, card, del));
+      const price = Number.isInteger(item.price) ? `₹${inr.format(item.price)}/${unitFor(item.category)}` : null;
+      const card = el("article", { class: "item" }, [
+        thumb, del,
+        el("div", { class: "body" }, [
+          el("h3", { text: item.name }),
+          el("p", { class: "meta", text: item.badge ? `${labelFor(item.category)} · ${item.badge}` : labelFor(item.category) }),
+          el("p", { class: price ? "price" : "price req", text: price || "Price on request" }),
+        ]),
+      ]);
+      return card;
+    }));
+  }
+
+  async function removeItem(item, card, btn) {
+    btn.disabled = true;
+    card.classList.add("removing");
+    const res = await api(`/api/admin/menu/${encodeURIComponent(item.id)}`, { method: "DELETE" });
+    if (!res.ok && res.status !== 404) {
+      card.classList.remove("removing");
+      btn.disabled = false;
+      notice("#grid-notice", "err", (res.data && res.data.message) || "Couldn't delete that item.");
+      return;
+    }
+    state.items = state.items.filter((i) => i.id !== item.id);
+    setTimeout(renderGrid, 350);
+    showUndo(item);
+  }
+
+  function showUndo(item) {
+    clearTimeout(state.toastTimer);
+    state.undo = item;
+    $("#toast-text").textContent = `Deleted “${item.name}”`;
+    $("#toast").classList.add("show");
+    state.toastTimer = setTimeout(() => { $("#toast").classList.remove("show"); state.undo = null; }, 7000);
+  }
+
+  $("#toast-undo").addEventListener("click", async () => {
+    const item = state.undo;
+    if (!item) return;
+    state.undo = null;
+    $("#toast").classList.remove("show");
+    const payload = { name: item.name, category: item.category, description: item.description || "", badge: item.badge || "", image: item.image || "" };
+    if (Number.isInteger(item.price)) payload.price = String(item.price);
+    const res = await api("/api/admin/menu", { method: "POST", body: payload });
+    if (res.ok && res.data && res.data.item) {
+      state.items = [res.data.item, ...state.items];
+      renderGrid();
+      notice("#grid-notice", "ok", `Restored “${item.name}”.`);
+    } else {
+      notice("#grid-notice", "err", (res.data && res.data.message) || "Couldn't restore the item.");
+    }
+  });
+
+  /* ---------------- Numeric-only price ---------------- */
+  const priceInput = $("#f-price");
+  const updatePreview = () => {
+    const text = formatPrice(priceInput.value, $("#f-category").value);
+    $("#p-price").textContent = text || "Price on request";
+  };
+  priceInput.addEventListener("beforeinput", (e) => {
+    if (e.data && /\D/.test(e.data)) {
+      e.preventDefault();
+      $("#e-price").textContent = "Numbers only. The ₹ sign and unit are added for you.";
+    }
+  });
+  priceInput.addEventListener("input", () => {
+    const digits = priceInput.value.replace(/\D/g, "").replace(/^0+/, "").slice(0, 7);
+    if (digits !== priceInput.value) priceInput.value = digits;
+    else $("#e-price").textContent = "";
+    priceInput.removeAttribute("aria-invalid");
+    updatePreview();
+  });
+  $("#f-category").addEventListener("change", () => { updatePreview(); $("#e-category").textContent = ""; $("#f-category").removeAttribute("aria-invalid"); });
+  $("#f-description").addEventListener("input", (e) => { $("#c-description").textContent = `${e.target.value.length} / 240`; });
+  $("#f-name").addEventListener("input", () => { $("#e-name").textContent = ""; $("#f-name").removeAttribute("aria-invalid"); });
+
+  /* ---------------- Image handling ---------------- */
+  function showPreview(src, info) {
+    const img = $("#preview-img");
+    if (img) {
+      img.src = src;
+      img.setAttribute("referrerpolicy", "no-referrer");
+    }
+    $("#preview-info").textContent = info;
+    $("#preview").hidden = false;
+    $("#e-image").textContent = "";
+  }
+
+  function clearImage() {
+    state.image = "";
+    $("#f-url").value = "";
+    $("#f-file").value = "";
+    $("#preview").hidden = true;
+    $("#preview-img").removeAttribute("src");
+    $("#e-image").textContent = "";
+  }
+  $("#clear-image").addEventListener("click", clearImage);
+
+  async function loadImageFromFile(file) {
+    // Strategy 1: Native createImageBitmap (zero CSP overhead, avoids URL generation)
+    if (typeof createImageBitmap === "function") {
+      try {
+        const bitmap = await createImageBitmap(file);
+        return {
+          naturalWidth: bitmap.width,
+          naturalHeight: bitmap.height,
+          draw: (ctx, w, h) => ctx.drawImage(bitmap, 0, 0, w, h),
+          close: () => bitmap.close()
+        };
+      } catch (err) {
+        console.warn("[TCC] createImageBitmap fallback:", err);
+      }
+    }
+
+    // Strategy 2: FileReader Data URL (allowed by 'data:' in CSP)
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => resolve({
+          naturalWidth: img.naturalWidth,
+          naturalHeight: img.naturalHeight,
+          draw: (ctx, w, h) => ctx.drawImage(img, 0, 0, w, h),
+          close: () => {}
+        });
+        img.onerror = () => reject(new Error("That file couldn't be decoded as an image."));
+        img.src = reader.result;
+      };
+      reader.onerror = () => {
+        // Strategy 3: Object URL fallback
+        try {
+          const url = URL.createObjectURL(file);
+          const img = new Image();
+          img.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve({
+              naturalWidth: img.naturalWidth,
+              naturalHeight: img.naturalHeight,
+              draw: (ctx, w, h) => ctx.drawImage(img, 0, 0, w, h),
+              close: () => {}
+            });
+          };
+          img.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error("That file couldn't be read as an image."));
+          };
+          img.src = url;
+        } catch (e) {
+          reject(new Error("Could not read photo from device."));
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function canvasToDataUrl(canvas, type, quality) {
+    const url = canvas.toDataURL(type, quality);
+    return url.startsWith(`data:${type}`) ? url : null;
+  }
+
+  async function compressImage(file) {
+    const isImage = (file.type && file.type.startsWith("image/")) || /\.(jpe?g|png|webp|gif|avif|bmp)$/i.test(file.name || "");
+    if (!isImage) throw new Error("Please choose a valid photo (JPEG, PNG, WebP, etc.).");
+    if (file.size > MAX_SOURCE_BYTES) throw new Error("That photo is over 15 MB. Please choose a smaller one.");
+    const imgSource = await loadImageFromFile(file);
+    try {
+      let edge = MAX_EDGE;
+      for (let attempt = 0; attempt < 6; attempt += 1) {
+        const scale = Math.min(1, edge / Math.max(imgSource.naturalWidth, imgSource.naturalHeight));
+        const w = Math.max(1, Math.round(imgSource.naturalWidth * scale));
+        const h = Math.max(1, Math.round(imgSource.naturalHeight * scale));
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#FAF8F5";
+        ctx.fillRect(0, 0, w, h);
+        ctx.imageSmoothingQuality = "high";
+        imgSource.draw(ctx, w, h);
+        for (const q of [0.85, 0.74, 0.60, 0.45]) {
+          const url = canvasToDataUrl(canvas, "image/webp", q) || canvasToDataUrl(canvas, "image/jpeg", q);
+          if (url) {
+            const bytes = Math.round((url.length - url.indexOf(",") - 1) * 0.75);
+            if (bytes <= 1_100_000) return { url, w, h, bytes };
+          }
+        }
+        edge = Math.round(edge * 0.65);
+      }
+      throw new Error("That photo couldn't be scaled down. Please try a different photo.");
+    } finally {
+      if (typeof imgSource.close === "function") imgSource.close();
+    }
+  }
+
+  async function handleFile(file) {
+    if (!file) return;
+    $("#e-image").textContent = "";
+    $("#preview-info").textContent = "Preparing photo…";
+    $("#preview").hidden = false;
+    try {
+      const out = await compressImage(file);
+      state.image = out.url;
+      $("#f-url").value = "";
+      showPreview(out.url, `${file.name || "Photo"} · ${out.w}×${out.h} · ${Math.round(out.bytes / 1024)} KB`);
+    } catch (err) {
+      clearImage();
+      $("#e-image").textContent = err.message;
+    }
+  }
+
+  const drop = $("#drop");
+  $("#f-file").addEventListener("change", (e) => handleFile(e.target.files && e.target.files[0]));
+  if (drop) {
+    ["dragenter", "dragover"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+    ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+    drop.addEventListener("drop", (e) => handleFile(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]));
+  }
+  window.addEventListener("dragover", (e) => e.preventDefault());
+  window.addEventListener("drop", (e) => e.preventDefault());
+
+  // Native clipboard paste (Ctrl+V) anywhere in admin studio
+  window.addEventListener("paste", async (e) => {
+    if ($("#gate") && !$("#gate").hidden) return;
+    const items = e.clipboardData && e.clipboardData.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type && item.type.startsWith("image/")) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        if (file) {
+          await handleFile(file);
+          break;
+        }
+      }
+    }
+  });
+
+  // 1-Tap Curated Preset Cake Photos
+  document.querySelectorAll(".preset-chip").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const url = btn.dataset.img;
+      if (!url) return;
+      $("#f-url").value = url;
+      $("#f-file").value = "";
+      state.image = url;
+      showPreview(url, `Curated photo · ${btn.textContent.trim()}`);
+    });
+  });
+
+  let urlTimer = 0;
+  $("#f-url").addEventListener("input", (e) => {
+    clearTimeout(urlTimer);
+    const value = e.target.value.trim();
+    $("#e-image").textContent = "";
+    if (!value) {
+      if (!state.image.startsWith("data:")) clearImage();
+      return;
+    }
+    // Handle pasted data URIs directly
+    if (value.startsWith("data:image/")) {
+      state.image = value;
+      $("#f-file").value = "";
+      showPreview(value, "Embedded photo (Data URI)");
+      return;
+    }
+    urlTimer = setTimeout(() => {
+      let url;
+      try {
+        url = new URL(value);
+      } catch {
+        $("#e-image").textContent = "Please paste a full link starting with https://";
+        return;
+      }
+      if (url.protocol !== "https:" && url.protocol !== "http:") {
+        $("#e-image").textContent = "Image links must start with https://";
+        return;
+      }
+      state.image = url.href;
+      $("#f-file").value = "";
+      const test = new Image();
+      test.referrerPolicy = "no-referrer";
+      test.onload = () => showPreview(url.href, `Linked image · ${test.naturalWidth}×${test.naturalHeight}`);
+      test.onerror = () => {
+        showPreview(url.href, "Linked image · Web URL");
+        console.warn("[TCC] image link direct ping blocked by origin, preview retained:", url.href);
+      };
+      test.src = url.href;
+    }, 350);
+  });
+
+  /* ---------------- Submit ---------------- */
+  const FIELDS = { name: "#f-name", category: "#f-category", price: "#f-price", image: "#f-url" };
+  const ERRORS = { name: "#e-name", category: "#e-category", price: "#e-price", image: "#e-image" };
+
+  function showErrors(errors) {
+    Object.entries(errors).forEach(([field, message]) => {
+      if (ERRORS[field]) $(ERRORS[field]).textContent = message;
+      if (FIELDS[field]) $(FIELDS[field]).setAttribute("aria-invalid", "true");
+    });
+    const first = Object.keys(FIELDS).find((f) => errors[f]);
+    if (first) $(FIELDS[first]).focus();
+  }
+
+  $("#item-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    notice("#form-notice", "err", "");
+    Object.values(ERRORS).forEach((s) => { $(s).textContent = ""; });
+    Object.values(FIELDS).forEach((s) => $(s).removeAttribute("aria-invalid"));
+
+    const payload = {
+      name: $("#f-name").value.trim(),
+      category: $("#f-category").value,
+      description: $("#f-description").value.trim(),
+      badge: $("#f-badge").value.trim(),
+      price: priceInput.value.trim(),
+      image: state.image,
+    };
+    const errors = {};
+    if (payload.name.length < 2) errors.name = "Please enter a name.";
+    if (!payload.category) errors.category = "Please choose a category.";
+    if (payload.price && !/^\d{1,7}$/.test(payload.price)) errors.price = "Numbers only, for example 1500.";
+    if ($("#e-image").textContent) errors.image = $("#e-image").textContent;
+    if (Object.keys(errors).length) { showErrors(errors); notice("#form-notice", "err", "Please fix the highlighted fields."); return; }
+    if (!payload.price) delete payload.price;
+
+    const btn = $("#save-btn");
+    setBusy(btn, true);
+    const res = await api("/api/admin/menu", { method: "POST", body: payload });
+    setBusy(btn, false);
+
+    if (res.ok && res.data && res.data.item) {
+      rememberRecent(res.data.item);
+      state.items = [res.data.item, ...state.items];
+      renderGrid();
+      e.target.reset();
+      clearImage();
+      updatePreview();
+      $("#c-description").textContent = "0 / 240";
+      notice("#form-notice", "ok", `“${res.data.item.name}” is now live on the storefront.`);
+      return;
+    }
+    if (res.status === 400 && res.data && res.data.errors) {
+      showErrors(res.data.errors);
+      notice("#form-notice", "err", res.data.errors.form || "Please fix the highlighted fields.");
+      return;
+    }
+    notice("#form-notice", "err", (res.data && res.data.message) || "Couldn't publish the item. Your details are still here, so you can try again.");
+  });
+
+  /* ---------------- Boot ---------------- */
+  (async () => {
+    const rosterLoaded = await loadEmployeeRoster();
+    const res = await api("/api/admin/session");
+    if (res.ok && res.data && res.data.authenticated) await unlock(res.data.employee);
+    else lockOut(rosterLoaded ? "" : $("#login-error").textContent);
+  })();
+})();
+</script>
+</body>
+</html>
