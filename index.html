@@ -955,6 +955,18 @@ window.globalCakeMeshMaterial = null;
       try { sessionStorage.setItem("tcc-menu", JSON.stringify(data)); } catch { /* storage full or blocked */ }
       return { data, stale: false };
     } catch (err) {
+      // Synchronize changes made in Admin Studio on GitHub Pages
+      try {
+        const localMenu = localStorage.getItem("tcc_static_menu");
+        if (localMenu) {
+          const parsed = JSON.parse(localMenu);
+          if (parsed && Array.isArray(parsed.items) && parsed.items.length) {
+            return { data: parsed, stale: false };
+          }
+        }
+      } catch (e) {
+        console.warn("[TCC] local static menu read error:", e);
+      }
       try {
         const cached = sessionStorage.getItem("tcc-menu");
         if (cached) return { data: JSON.parse(cached), stale: true };
@@ -1126,6 +1138,24 @@ window.globalCakeMeshMaterial = null;
 
     /* High-Performance 2-Second Background Sync Interval Polling Network Loop */
     function startMenuPollingSync() {
+      // Instant cross-tab sync when Admin Studio publishes or deletes items
+      window.addEventListener("storage", (event) => {
+        if (event.key === "tcc_static_menu" && event.newValue) {
+          try {
+            const freshData = JSON.parse(event.newValue);
+            if (freshData && Array.isArray(freshData.items)) {
+              const freshHash = JSON.stringify(freshData);
+              if (freshHash !== lastMenuFingerprint) {
+                lastMenuFingerprint = freshHash;
+                applyMenuData(freshData, false);
+              }
+            }
+          } catch (err) {
+            console.warn("[TCC] live cross-tab storage sync error:", err);
+          }
+        }
+      });
+
       window.setInterval(async () => {
         try {
           const res = await fetch(`/api/menu?cb=${Date.now()}`, {
@@ -1133,17 +1163,35 @@ window.globalCakeMeshMaterial = null;
             cache: "no-store",
             credentials: "same-origin"
           });
-          if (!res.ok) return;
-          const freshData = await res.json();
-          if (!freshData || !Array.isArray(freshData.items) || !Array.isArray(freshData.categories)) return;
-          const freshHash = JSON.stringify(freshData);
-          if (freshHash !== lastMenuFingerprint) {
-            lastMenuFingerprint = freshHash;
-            applyMenuData(freshData, false);
+          if (res.ok) {
+            const freshData = await res.json();
+            if (freshData && Array.isArray(freshData.items) && Array.isArray(freshData.categories)) {
+              const freshHash = JSON.stringify(freshData);
+              if (freshHash !== lastMenuFingerprint) {
+                lastMenuFingerprint = freshHash;
+                applyMenuData(freshData, false);
+              }
+              return;
+            }
           }
         } catch {
           // Gracefully suppress intermittent offline/timeout exceptions in background loop
         }
+
+        // On static hosting (GitHub Pages), synchronize from local vault
+        try {
+          const localRaw = localStorage.getItem("tcc_static_menu");
+          if (localRaw) {
+            const freshData = JSON.parse(localRaw);
+            if (freshData && Array.isArray(freshData.items)) {
+              const freshHash = JSON.stringify(freshData);
+              if (freshHash !== lastMenuFingerprint) {
+                lastMenuFingerprint = freshHash;
+                applyMenuData(freshData, false);
+              }
+            }
+          }
+        } catch {}
       }, 2000);
     }
 
