@@ -531,9 +531,19 @@
   /* ---------- Customer WhatsApp Order Modal ---------- */
   .order-modal-backdrop {
     position: fixed; inset: 0; z-index: 9999;
-    display: grid; place-items: center; padding: 1.25rem;
+    display: none; /* Defaults to hidden upon initialization */
+    place-items: center; padding: 1.25rem;
     background: rgba(13, 11, 10, 0.88);
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    opacity: 0;
+    transition: opacity 280ms var(--ease-reveal);
+  }
+  .order-modal-backdrop[hidden] {
+    display: none !important;
+  }
+  .order-modal-backdrop.active {
+    display: grid !important;
+    opacity: 1;
     animation: modalFadeIn .3s var(--ease-reveal) both;
   }
   @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -546,8 +556,21 @@
     box-shadow: 0 30px 80px -20px rgba(0,0,0,.9), 0 0 35px rgba(212,175,55,.2);
     animation: modalRise .38s var(--ease-reveal) both;
     color: var(--espresso);
+    transform: translateY(0) scale(1);
+    transition: transform 280ms var(--ease-reveal), opacity 280ms var(--ease-reveal);
   }
   @keyframes modalRise { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+  /* Reverse fade/slide animation when closing */
+  .order-modal-backdrop.closing {
+    animation: modalFadeOut .26s var(--ease-silk) forwards;
+  }
+  .order-modal-backdrop.closing .order-modal-card {
+    animation: modalFallOut .26s var(--ease-silk) forwards;
+  }
+  @keyframes modalFadeOut { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes modalFallOut { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(22px) scale(0.96); } }
+
   :root[data-theme="light"] .order-modal-card {
     background: rgba(255, 252, 248, 0.98);
     border-color: rgba(138,110,23,.5);
@@ -567,13 +590,92 @@
   .order-modal-close:hover {
     background: var(--gold); color: #0D0B0A; transform: scale(1.08);
   }
-  .order-modal-cake-summary {
-    margin: 1.15rem 0; padding: .85rem 1.1rem;
-    border-radius: .9rem; background: rgba(212,175,55,.08);
-    border: 1px solid rgba(212,175,55,.3);
+
+  /* Dynamic Custom Stylized Cake Select Dropdown */
+  .om-cake-select-group {
+    margin: 1.15rem 0 .95rem;
   }
-  .om-cake-title { display: block; font-family: var(--serif); font-size: 1.25rem; font-weight: 500; color: var(--gold-deep); }
-  .om-cake-sub { font-size: .75rem; color: var(--espresso-soft); margin-top: .15rem; display: block; }
+  .om-cake-select-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .om-cake-select {
+    width: 100%;
+    min-height: 50px;
+    height: 50px;
+    padding: .75rem 2.5rem .75rem 1rem;
+    border-radius: .9rem;
+    border: 1.5px solid rgba(212, 175, 55, 0.55);
+    background: linear-gradient(145deg, rgba(28, 23, 19, 0.95), rgba(18, 15, 13, 0.98));
+    color: var(--gold-deep);
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: .02em;
+    cursor: pointer;
+    box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(212, 175, 55, 0.15);
+    transition: border-color 300ms ease, box-shadow 300ms ease, transform 200ms ease;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23D4AF37' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    box-sizing: border-box;
+  }
+  .om-cake-select:hover {
+    border-color: var(--gold);
+    box-shadow: 0 6px 20px -4px rgba(212, 175, 55, 0.25), inset 0 1px 0 rgba(212, 175, 55, 0.25);
+    transform: translateY(-1px);
+  }
+  .om-cake-select:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.22), 0 8px 24px -4px rgba(212, 175, 55, 0.35);
+  }
+  .om-cake-select option {
+    background-color: #171310;
+    color: #F5F2EB;
+    font-family: var(--sans);
+    font-size: .92rem;
+    padding: .65rem;
+  }
+  .om-cake-select optgroup {
+    background-color: #120F0D;
+    color: var(--gold-deep);
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  :root[data-theme="light"] .om-cake-select {
+    background: #FFFDF9;
+    border-color: rgba(138, 110, 23, 0.6);
+    color: #2C2523;
+  }
+  :root[data-theme="light"] .om-cake-select option {
+    background-color: #FFFDF9;
+    color: #2C2523;
+  }
+  .om-cake-selected-meta {
+    font-size: .75rem;
+    color: var(--espresso-soft);
+    margin-top: .4rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    min-height: 22px;
+  }
+  .om-cake-selected-meta .meta-tag {
+    display: inline-block;
+    padding: .15rem .55rem;
+    border-radius: 999px;
+    background: rgba(212, 175, 55, 0.14);
+    border: 1px solid rgba(212, 175, 55, 0.32);
+    color: var(--gold-deep);
+    font-size: .65rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
   .om-field-group { display: grid; gap: .4rem; }
   .om-label { font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--espresso-soft); font-weight: 600; }
   .om-input {
@@ -802,7 +904,7 @@
 </button>
 
 <!-- Customer WhatsApp Order Modal -->
-<div class="order-modal-backdrop" id="order-modal" hidden>
+<div class="order-modal-backdrop" id="order-modal" hidden style="display: none;">
   <div class="order-modal-card" role="dialog" aria-modal="true" aria-labelledby="order-modal-title">
     <div class="order-modal-header">
       <div>
@@ -812,9 +914,14 @@
       <button type="button" class="order-modal-close" id="order-modal-close" aria-label="Close order dialog">&times;</button>
     </div>
     <form id="order-modal-form">
-      <div class="order-modal-cake-summary">
-        <strong id="om-cake-name" class="om-cake-title"></strong>
-        <span id="om-cake-meta" class="om-cake-sub"></span>
+      <div class="om-field-group om-cake-select-group">
+        <label for="om-cake-select" class="om-label">Selected Confection / Cake Item *</label>
+        <div class="om-cake-select-wrapper">
+          <select id="om-cake-select" class="om-input om-select om-cake-select" aria-label="Select Cake Item">
+            <!-- Populated dynamically with current menu listings -->
+          </select>
+        </div>
+        <div class="om-cake-selected-meta" id="om-cake-meta"></div>
       </div>
       <div class="om-field-group">
         <label for="om-customer-name" class="om-label">Your Name *</label>
@@ -1025,6 +1132,92 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
   }
 
   let activeOrderItem = null;
+  let currentStoreItems = [];
+  let currentCategoryMap = new Map();
+
+  function populateOrderCakeDropdown(selectedIdentifier) {
+    const select = $("#om-cake-select");
+    if (!select) return;
+
+    const items = (currentStoreItems && currentStoreItems.length) ? currentStoreItems : DEFAULT_MENU_DATA.items;
+    const catMap = (currentCategoryMap && currentCategoryMap.size) ? currentCategoryMap : new Map(DEFAULT_MENU_DATA.categories.map((c) => [c.id, c]));
+
+    const prevVal = select.value;
+    select.innerHTML = "";
+
+    // Group items by category for clean structure
+    const grouped = new Map();
+    items.forEach((item) => {
+      const catKey = item.category || "celebration-cakes";
+      if (!grouped.has(catKey)) grouped.set(catKey, []);
+      grouped.get(catKey).push(item);
+    });
+
+    let selectedMatch = false;
+
+    grouped.forEach((groupItems, catKey) => {
+      const cat = catMap.get(catKey) || { label: "Cakes", unit: "kg" };
+      const optgroup = document.createElement("optgroup");
+      optgroup.label = `✧ ${cat.label}`;
+
+      groupItems.forEach((item) => {
+        const opt = document.createElement("option");
+        opt.value = item.id || item.name;
+        opt.dataset.cakeName = item.name;
+        opt.dataset.category = cat.label;
+        const formattedPrice = formatPrice(item.price, cat.unit);
+        opt.dataset.price = formattedPrice || "Price on request";
+        opt.dataset.badge = item.badge || "";
+        opt.dataset.desc = item.description || "";
+
+        // Format: "Item Name [Badge] · ₹Price/unit" or "Item Name · ₹Price/unit"
+        const badgeText = item.badge ? ` [${item.badge}]` : "";
+        const priceText = formattedPrice ? ` · ${formattedPrice}` : "";
+        opt.textContent = `${item.name}${badgeText}${priceText}`;
+
+        if (selectedIdentifier && (item.id === selectedIdentifier || item.name === selectedIdentifier)) {
+          opt.selected = true;
+          selectedMatch = true;
+        } else if (!selectedIdentifier && prevVal && (item.id === prevVal || item.name === prevVal)) {
+          opt.selected = true;
+          selectedMatch = true;
+        }
+
+        optgroup.appendChild(opt);
+      });
+
+      select.appendChild(optgroup);
+    });
+
+    if (!selectedMatch && select.options.length > 0) {
+      select.options[0].selected = true;
+    }
+
+    updateSelectedCakeMeta();
+  }
+
+  function updateSelectedCakeMeta() {
+    const select = $("#om-cake-select");
+    const metaEl = $("#om-cake-meta");
+    if (!select || !metaEl) return;
+    const opt = select.selectedOptions[0];
+    if (!opt) return;
+
+    const cat = opt.dataset.category || "Celebration Cakes";
+    const price = opt.dataset.price || "Price on request";
+    const badge = opt.dataset.badge;
+
+    metaEl.innerHTML = "";
+    if (badge) {
+      const tag = document.createElement("span");
+      tag.className = "meta-tag";
+      tag.textContent = badge;
+      metaEl.appendChild(tag);
+    }
+    const text = document.createElement("span");
+    text.textContent = `${cat} · ${price}`;
+    metaEl.appendChild(text);
+  }
 
   function openOrderModal(item, cat, priceText) {
     activeOrderItem = { item, cat, priceText };
@@ -1032,8 +1225,8 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     if (!modal) {
       const fallbackMsg = formatWhatsAppOrderMessage({
         name: "",
-        cakeName: item.name,
-        category: cat.label,
+        cakeName: item ? item.name : "Bespoke Cake",
+        category: cat ? cat.label : "Celebration Cakes",
         weight: "1.0 kg",
         price: priceText,
         deadline: "Today · 8:00 PM",
@@ -1043,39 +1236,71 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       return;
     }
 
-    const titleEl = $("#om-cake-name");
-    const metaEl = $("#om-cake-meta");
+    // Populate dropdown with all current menu listings, highlighting the clicked item
+    populateOrderCakeDropdown(item ? (item.id || item.name) : null);
+
     const nameInput = $("#om-customer-name");
     const instructionsInput = $("#om-instructions");
-
-    if (titleEl) titleEl.textContent = item.name;
-    if (metaEl) metaEl.textContent = `${cat.label}${priceText ? ` · ${priceText}` : " · Price on request"}`;
     if (nameInput) nameInput.value = "";
     if (instructionsInput) instructionsInput.value = "";
 
+    // Show modal with animation
     modal.hidden = false;
+    modal.style.display = "grid";
+    modal.classList.remove("closing");
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+
     if (nameInput) nameInput.focus();
   }
 
   function closeOrderModal() {
     const modal = $("#order-modal");
-    if (modal) modal.hidden = true;
+    if (!modal || modal.hidden) return;
+
+    modal.classList.add("closing");
+    modal.classList.remove("active");
+
+    setTimeout(() => {
+      modal.hidden = true;
+      modal.style.display = "none";
+      modal.classList.remove("closing");
+      document.body.style.overflow = "";
+    }, 260);
   }
 
   function initOrderModal() {
     const modal = $("#order-modal");
     if (!modal) return;
+
+    // Ensure default hidden state upon initialization
+    modal.hidden = true;
+    modal.style.display = "none";
+    modal.classList.remove("active", "closing");
+
     const closeBtn = $("#order-modal-close");
     const cancelBtn = $("#om-cancel-btn");
     const form = $("#order-modal-form");
     const chips = $$(".om-chip", modal);
     const deadlineInput = $("#om-deadline");
+    const cakeSelect = $("#om-cake-select");
+
+    // Pre-populate dropdown from default items
+    populateOrderCakeDropdown();
+
+    cakeSelect?.addEventListener("change", updateSelectedCakeMeta);
 
     closeBtn?.addEventListener("click", closeOrderModal);
     cancelBtn?.addEventListener("click", closeOrderModal);
 
     modal.addEventListener("click", (e) => {
       if (e.target === modal) closeOrderModal();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) {
+        closeOrderModal();
+      }
     });
 
     chips.forEach((chip) => {
@@ -1088,17 +1313,21 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
 
     form?.addEventListener("submit", (e) => {
       e.preventDefault();
-      if (!activeOrderItem) return;
-      const { item, cat, priceText } = activeOrderItem;
+      const select = $("#om-cake-select");
+      const selectedOpt = select ? select.selectedOptions[0] : null;
+      const cakeName = selectedOpt?.dataset.cakeName || (activeOrderItem?.item?.name) || "Bespoke Cake";
+      const category = selectedOpt?.dataset.category || (activeOrderItem?.cat?.label) || "Celebration Cakes";
+      const priceText = selectedOpt?.dataset.price || activeOrderItem?.priceText || "Price on request";
+
       const customerName = $("#om-customer-name")?.value.trim() || "";
       const weight = $("#om-weight")?.value || "1.0 kg";
-      const deadline = $("#om-deadline")?.value.trim() || "Today";
+      const deadline = $("#om-deadline")?.value.trim() || "Today · 8:00 PM";
       const instructions = $("#om-instructions")?.value.trim() || "";
 
       const msg = formatWhatsAppOrderMessage({
         name: customerName,
-        cakeName: item.name,
-        category: cat.label,
+        cakeName,
+        category,
         weight,
         price: priceText,
         deadline,
@@ -1283,6 +1512,11 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       lastMenuFingerprint = JSON.stringify(data);
       items = data.items.filter((item) => item && typeof item.name === "string");
       categoryMap = new Map(data.categories.map((category) => [category.id, category]));
+      currentStoreItems = items;
+      currentCategoryMap = categoryMap;
+      if (typeof populateOrderCakeDropdown === "function") {
+        populateOrderCakeDropdown();
+      }
       buildTabs(data.categories);
       if (!tabs.some((tab) => tab.dataset.filter === current)) current = "all";
       tabs.forEach((tab) => {
