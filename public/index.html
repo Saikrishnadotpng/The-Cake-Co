@@ -684,6 +684,29 @@
     background: rgba(25, 22, 19, 0.85); color: var(--espresso); font-size: .92rem;
     transition: border-color 300ms ease, box-shadow 300ms ease;
   }
+  .om-input.has-error {
+    border-color: #E88B77 !important;
+    box-shadow: 0 0 0 3px rgba(232, 139, 119, 0.3) !important;
+    animation: inputShake .35s ease;
+  }
+  @keyframes inputShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+  }
+  .om-field-alert {
+    display: none;
+    font-size: .72rem;
+    color: #F09A86;
+    margin-top: .25rem;
+    letter-spacing: .02em;
+    animation: modalRise .2s ease;
+  }
+  .om-field-alert.show {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+  }
   :root[data-theme="light"] .om-input {
     background: #FFFDF9; border-color: #D6C6B0; color: #2C2523;
   }
@@ -913,7 +936,7 @@
       </div>
       <button type="button" class="order-modal-close" id="order-modal-close" aria-label="Close order dialog">&times;</button>
     </div>
-    <form id="order-modal-form">
+    <form id="order-modal-form" novalidate>
       <div class="om-field-group om-cake-select-group">
         <label for="om-cake-select" class="om-label">Selected Confection / Cake Item *</label>
         <div class="om-cake-select-wrapper">
@@ -926,6 +949,7 @@
       <div class="om-field-group">
         <label for="om-customer-name" class="om-label">Your Name *</label>
         <input type="text" id="om-customer-name" class="om-input" placeholder="e.g. Maya Nair" required autocomplete="name">
+        <div class="om-field-alert" id="om-name-alert" role="alert">⚠️ Please enter your name to personalize your cake booking.</div>
       </div>
       <div class="om-row">
         <div class="om-field-group">
@@ -1311,18 +1335,40 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       });
     });
 
-    form?.addEventListener("submit", (e) => {
-      e.preventDefault();
+    const nameInput = $("#om-customer-name");
+    const nameAlert = $("#om-name-alert");
+
+    nameInput?.addEventListener("input", () => {
+      nameInput.classList.remove("has-error");
+      nameAlert?.classList.remove("show");
+    });
+
+    function dispatchWhatsAppOrder() {
+      const customerName = nameInput ? nameInput.value.trim() : "";
+
+      if (!customerName) {
+        if (nameInput) {
+          nameInput.classList.add("has-error");
+          nameInput.focus();
+        }
+        if (nameAlert) nameAlert.classList.add("show");
+        return false;
+      }
+
       const select = $("#om-cake-select");
       const selectedOpt = select ? select.selectedOptions[0] : null;
       const cakeName = selectedOpt?.dataset.cakeName || (activeOrderItem?.item?.name) || "Bespoke Cake";
       const category = selectedOpt?.dataset.category || (activeOrderItem?.cat?.label) || "Celebration Cakes";
-      const priceText = selectedOpt?.dataset.price || activeOrderItem?.priceText || "Price on request";
+      const priceText = selectedOpt?.dataset.price || (activeOrderItem?.priceText) || "Price on request";
 
-      const customerName = $("#om-customer-name")?.value.trim() || "";
-      const weight = $("#om-weight")?.value || "1.0 kg";
-      const deadline = $("#om-deadline")?.value.trim() || "Today · 8:00 PM";
-      const instructions = $("#om-instructions")?.value.trim() || "";
+      const weightSelect = $("#om-weight");
+      const weight = weightSelect ? weightSelect.value : "1.0 kg";
+
+      const deadlineInput = $("#om-deadline");
+      const deadline = (deadlineInput && deadlineInput.value.trim()) || "Today · 8:00 PM";
+
+      const instructionsInput = $("#om-instructions");
+      const instructions = (instructionsInput && instructionsInput.value.trim()) || "None specified";
 
       const msg = formatWhatsAppOrderMessage({
         name: customerName,
@@ -1334,9 +1380,31 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
         instructions
       });
 
-      const url = waLink(msg);
-      window.open(url, "_blank", "noopener,noreferrer");
+      // Force explicit base destination testing line: +91 94478 67023 (919447867023)
+      const cleanTestingPhone = "919447867023";
+      const whatsappUrl = `https://wa.me/${cleanTestingPhone}?text=${encodeURIComponent(msg)}`;
+
+      // Execute direct window instance initialization immediately upon click validation
+      const win = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      if (!win || win.closed || typeof win.closed === "undefined") {
+        window.location.href = whatsappUrl;
+      }
+
       closeOrderModal();
+      return true;
+    }
+
+    const submitBtn = $(".om-submit-btn", form);
+    submitBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dispatchWhatsAppOrder();
+    });
+
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dispatchWhatsAppOrder();
     });
   }
 
