@@ -744,8 +744,15 @@
   .om-row { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; margin-top: .85rem; }
   @media (max-width: 500px) { .om-row { grid-template-columns: 1fr; } }
   .om-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23D4AF37' stroke-width='1.4'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right .85rem center; padding-right: 2.2rem;
+    cursor: pointer;
+  }
+  .om-select::-ms-expand {
+    display: none;
   }
   .om-textarea { min-height: 72px; resize: vertical; line-height: 1.5; }
   .om-preset-chips { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .5rem; }
@@ -1006,10 +1013,17 @@
         </div>
         <div class="om-cake-selected-meta" id="om-cake-meta"></div>
       </div>
-      <div class="om-field-group">
-        <label for="om-customer-name" class="om-label">Your Name *</label>
-        <input type="text" id="om-customer-name" class="om-input" placeholder="e.g. Maya Nair" required autocomplete="name">
-        <div class="om-field-alert" id="om-name-alert" role="alert">⚠️ Please enter your name to personalize your cake booking.</div>
+      <div class="om-row om-contact-row" style="margin-top: 0; margin-bottom: 0;">
+        <div class="om-field-group">
+          <label for="om-customer-name" class="om-label">Your Name *</label>
+          <input type="text" id="om-customer-name" class="om-input" placeholder="e.g. Maya Nair" required autocomplete="name">
+          <div class="om-field-alert" id="om-name-alert" role="alert">⚠️ Please enter your name to personalize your cake booking.</div>
+        </div>
+        <div class="om-field-group">
+          <label for="om-customer-phone" class="om-label">WhatsApp Number *</label>
+          <input type="tel" id="om-customer-phone" class="om-input" placeholder="e.g. +91 98471 20491" required autocomplete="tel" maxlength="20">
+          <div class="om-field-alert" id="om-phone-alert" role="alert">⚠️ Please enter your WhatsApp number for order confirmation.</div>
+        </div>
       </div>
       <div class="om-row">
         <div class="om-field-group">
@@ -1198,8 +1212,9 @@ Hello ${SHOP.name}! I would like to book a bespoke cake for an upcoming celebrat
   }
 
   /* ---------- WhatsApp Formatted Ordering Flow (+91 94478 67023) ---------- */
-  function formatWhatsAppOrderMessage({ name, cakeName, weight, price, deadline, instructions, category }) {
+  function formatWhatsAppOrderMessage({ name, phone, cakeName, weight, price, deadline, instructions, category }) {
     const custName = (name && name.trim()) || "Customer";
+    const custPhone = (phone && phone.trim()) || "Not provided";
     const cake = cakeName || "Bespoke Cake";
     const cat = category || "Celebration Cakes";
     const wt = weight || "1.0 kg";
@@ -1210,6 +1225,7 @@ Hello ${SHOP.name}! I would like to book a bespoke cake for an upcoming celebrat
     return `🎂 *THE CAKE CO. (TCC) — CUSTOM CAKE ORDER*
 ━━━━━━━━━━━━━━━━━━━━━━━
 *Customer Name:* ${custName}
+*Customer WhatsApp:* ${custPhone}
 *Cake Selection:* ${cake}
 *Category:* ${cat}
 *Weight / Size:* ${wt}
@@ -1330,8 +1346,22 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     populateOrderCakeDropdown(item ? (item.id || item.name) : null);
 
     const nameInput = $("#om-customer-name");
+    const phoneInput = $("#om-customer-phone");
     const instructionsInput = $("#om-instructions");
-    if (nameInput) nameInput.value = "";
+    if (nameInput) {
+      nameInput.value = "";
+      nameInput.classList.remove("has-error");
+    }
+    const nameAlert = $("#om-name-alert");
+    if (nameAlert) nameAlert.classList.remove("show");
+
+    if (phoneInput) {
+      phoneInput.value = "";
+      phoneInput.classList.remove("has-error");
+    }
+    const phoneAlert = $("#om-phone-alert");
+    if (phoneAlert) phoneAlert.classList.remove("show");
+
     if (instructionsInput) instructionsInput.value = "";
 
     // Show modal with animation
@@ -1371,7 +1401,7 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     return `TCC-ORD-${numPart}-${alphaPart}`;
   }
 
-  function logOrderToActiveDeck({ customerName, cakeName, category, badge, priceText, weight, deadline, instructions }) {
+  function logOrderToActiveDeck({ customerName, customerPhone, cakeName, category, badge, priceText, weight, deadline, instructions }) {
     const orderId = generateOrderId();
     const tagDescriptor = `${cakeName}${badge ? ` [${badge}]` : ""}${category ? ` (${category})` : ""}`;
 
@@ -1389,6 +1419,7 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       cakeName: cakeName,
       metadata: {
         customerName: customerName,
+        customerPhone: customerPhone,
         deadline: deadline,
         weight: weight,
         instructions: instructions,
@@ -1397,7 +1428,7 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
         badge: badge || "Classic"
       },
       customerName: customerName,
-      customerPhone: "+91 94478 67023",
+      customerPhone: customerPhone || "+91 94478 67023",
       weight: weight,
       deadline: deadline,
       customMessage: instructions,
@@ -1474,6 +1505,8 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     const cakeSelect = $("#om-cake-select");
     const nameInput = $("#om-customer-name");
     const nameAlert = $("#om-name-alert");
+    const phoneInput = $("#om-customer-phone");
+    const phoneAlert = $("#om-phone-alert");
 
     // Tactile micro-lift user feedback trigger (scale-102 with subtle gold highlight)
     const triggerMicroLift = (element) => {
@@ -1546,17 +1579,36 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       nameAlert?.classList.remove("show");
     });
 
+    phoneInput?.addEventListener("input", () => {
+      phoneInput.classList.remove("has-error");
+      phoneAlert?.classList.remove("show");
+    });
+
     function dispatchWhatsAppOrder() {
       const customerName = nameInput ? nameInput.value.trim() : "";
+      const customerPhone = phoneInput ? phoneInput.value.trim() : "";
 
+      let hasError = false;
       if (!customerName) {
         if (nameInput) {
           nameInput.classList.add("has-error");
           nameInput.focus();
         }
         if (nameAlert) nameAlert.classList.add("show");
-        return false;
+        hasError = true;
       }
+
+      const digitsOnly = customerPhone.replace(/\D/g, "");
+      if (!customerPhone || digitsOnly.length < 7) {
+        if (phoneInput) {
+          phoneInput.classList.add("has-error");
+          if (!hasError) phoneInput.focus();
+        }
+        if (phoneAlert) phoneAlert.classList.add("show");
+        hasError = true;
+      }
+
+      if (hasError) return false;
 
       const select = $("#om-cake-select");
       const selectedOpt = select ? select.selectedOptions[0] : null;
@@ -1573,6 +1625,7 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       // 1. Create automated order logging object and synchronize to local storage ('tcc_active_orders_deck')
       logOrderToActiveDeck({
         customerName,
+        customerPhone,
         cakeName,
         category,
         badge,
@@ -1584,6 +1637,7 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
 
       const msg = formatWhatsAppOrderMessage({
         name: customerName,
+        phone: customerPhone,
         cakeName,
         category,
         weight,
