@@ -1753,9 +1753,9 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
 
     function dispatchWhatsAppOrder() {
       const customerName = nameInput ? nameInput.value.trim() : "";
-      const selectedOpt = countrySelect ? countrySelect.selectedOptions[0] : null;
+      const selectedCountryOpt = countrySelect ? countrySelect.selectedOptions[0] : null;
       const countryCode = (countrySelect && countrySelect.value) ? countrySelect.value : "+91";
-      const requiredDigits = parseInt(selectedOpt?.dataset.digits || "10", 10);
+      const requiredDigits = parseInt(selectedCountryOpt?.dataset.digits || "10", 10);
       const rawDigits = phoneInput ? phoneInput.value.replace(/\D/g, "") : "";
 
       let hasError = false;
@@ -1799,11 +1799,11 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       const customerPhone = isOther ? `+${rawDigits}` : `${countryCode} ${rawDigits}`;
 
       const select = $("#om-cake-select");
-      const selectedOpt = select ? select.selectedOptions[0] : null;
-      const cakeName = selectedOpt?.dataset.cakeName || (activeOrderItem?.item?.name) || "Bespoke Cake";
-      const category = selectedOpt?.dataset.category || (activeOrderItem?.cat?.label) || "Celebration Cakes";
-      const priceText = selectedOpt?.dataset.price || (activeOrderItem?.priceText) || "Price on request";
-      const badge = selectedOpt?.dataset.badge || "";
+      const selectedCakeOpt = select ? select.selectedOptions[0] : null;
+      const cakeName = selectedCakeOpt?.dataset.cakeName || (activeOrderItem?.item?.name) || "Bespoke Cake";
+      const category = selectedCakeOpt?.dataset.category || (activeOrderItem?.cat?.label) || "Celebration Cakes";
+      const priceText = selectedCakeOpt?.dataset.price || (activeOrderItem?.priceText) || "Price on request";
+      const badge = selectedCakeOpt?.dataset.badge || "";
 
       const weight = weightSelect ? weightSelect.value : "1.0 kg";
       const deadline = (deadlineInput && deadlineInput.value.trim()) || "Today · 8:00 PM";
