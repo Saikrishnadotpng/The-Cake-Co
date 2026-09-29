@@ -427,48 +427,7 @@ function generateOrderToken() {
 }
 
 function seedOrders() {
-  const now = Date.now();
-  return [
-    {
-      id: "TCC-ORD-8F2A",
-      itemName: "Heart Shaped Red Velvet Cake",
-      customerPhone: "+91 87143 33247",
-      customMessage: "Forever & Always, Maya & Arjun",
-      weight: "1.5 kg",
-      deadline: "2026-09-28 21:30",
-      verificationStatus: "Pending Verification",
-      verified: false,
-      verifiedBy: null,
-      verifiedAt: null,
-      createdAt: new Date(now - 35 * 60_000).toISOString()
-    },
-    {
-      id: "TCC-ORD-4D9C",
-      itemName: "Belgian Chocolate Truffle Cake",
-      customerPhone: "+91 98471 20491",
-      customMessage: "Happy 30th Birthday Siddharth! ★",
-      weight: "2.0 kg",
-      deadline: "2026-09-28 22:00",
-      verificationStatus: "Pending Verification",
-      verified: false,
-      verifiedBy: null,
-      verifiedAt: null,
-      createdAt: new Date(now - 20 * 60_000).toISOString()
-    },
-    {
-      id: "TCC-ORD-1E7B",
-      itemName: "Raspberry Pistachio Opera Gateau",
-      customerPhone: "+91 94470 11823",
-      customMessage: "Congratulations Dr. Ananya! 🎓",
-      weight: "1.0 kg",
-      deadline: "2026-09-28 20:45",
-      verificationStatus: "Verified & Dispatched",
-      verified: true,
-      verifiedBy: "Chef Rahul (TCC-02)",
-      verifiedAt: "2026-09-28 20:25:10",
-      createdAt: new Date(now - 60 * 60_000).toISOString()
-    }
-  ];
+  return [];
 }
 
 async function writeOrdersFile(entries) {
