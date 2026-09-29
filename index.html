@@ -741,6 +741,85 @@
     outline: none; border-color: var(--gold);
     box-shadow: 0 0 0 3px rgba(212,175,55,.2);
   }
+  /* Phone Input Group with Country Code & Custom Limit */
+  .om-phone-wrapper {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-height: 44px;
+    height: 44px;
+    border-radius: .85rem;
+    border: 1px solid var(--sand-deep);
+    background: rgba(25, 22, 19, 0.85);
+    transition: border-color 300ms ease, box-shadow 300ms ease;
+    overflow: hidden;
+  }
+  .om-phone-wrapper.has-error {
+    border-color: #E88B77 !important;
+    box-shadow: 0 0 0 3px rgba(232, 139, 119, 0.3) !important;
+    animation: inputShake .35s ease;
+  }
+  .om-phone-wrapper:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,175,55,.2);
+  }
+  :root[data-theme="light"] .om-phone-wrapper {
+    background: #FFFDF9; border-color: #D6C6B0;
+  }
+  .om-country-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: rgba(212, 175, 55, 0.08);
+    color: var(--gold-deep);
+    border: none;
+    border-right: 1px solid rgba(212, 175, 55, 0.25);
+    padding: .5rem 1.4rem .5rem .65rem;
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    max-width: 108px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23D4AF37' stroke-width='1.4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .35rem center;
+    transition: background-color 200ms ease;
+  }
+  .om-country-select::-ms-expand { display: none; }
+  .om-country-select:hover {
+    background-color: rgba(212, 175, 55, 0.16);
+  }
+  .om-country-select option {
+    background-color: #171310;
+    color: #F5F2EB;
+    font-size: .85rem;
+    padding: .45rem;
+  }
+  :root[data-theme="light"] .om-country-select {
+    background: rgba(212, 175, 55, 0.1);
+    border-right-color: #D6C6B0;
+    color: #7A5B0B;
+  }
+  :root[data-theme="light"] .om-country-select option {
+    background-color: #FFFDF9;
+    color: #2C2523;
+  }
+  .om-phone-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    padding: .5rem .75rem;
+    color: var(--espresso);
+    font-size: .92rem;
+    outline: none;
+    letter-spacing: .05em;
+    font-variant-numeric: tabular-nums;
+  }
+  :root[data-theme="light"] .om-phone-input {
+    color: #2C2523;
+  }
   .om-row { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; margin-top: .85rem; }
   @media (max-width: 500px) { .om-row { grid-template-columns: 1fr; } }
   .om-select {
@@ -1021,8 +1100,26 @@
         </div>
         <div class="om-field-group">
           <label for="om-customer-phone" class="om-label">WhatsApp Number *</label>
-          <input type="tel" id="om-customer-phone" class="om-input" placeholder="e.g. +91 98471 20491" required autocomplete="tel" maxlength="20">
-          <div class="om-field-alert" id="om-phone-alert" role="alert">⚠️ Please enter your WhatsApp number for order confirmation.</div>
+          <div class="om-phone-wrapper" id="om-phone-wrapper">
+            <select id="om-country-code" class="om-country-select" aria-label="Country Code">
+              <option value="+91" data-digits="10" data-placeholder="98471 20491" selected>🇮🇳 +91</option>
+              <option value="+971" data-digits="9" data-placeholder="50 123 4567">🇦🇪 +971</option>
+              <option value="+966" data-digits="9" data-placeholder="50 123 4567">🇸🇦 +966</option>
+              <option value="+968" data-digits="8" data-placeholder="9123 4567">🇴🇲 +968</option>
+              <option value="+974" data-digits="8" data-placeholder="3312 3456">🇶🇦 +974</option>
+              <option value="+965" data-digits="8" data-placeholder="9123 4567">🇰🇼 +965</option>
+              <option value="+973" data-digits="8" data-placeholder="3612 3456">🇧🇭 +973</option>
+              <option value="+44" data-digits="10" data-placeholder="7911 123456">🇬🇧 +44</option>
+              <option value="+1" data-digits="10" data-placeholder="202 555 0123">🇺🇸 +1</option>
+              <option value="+65" data-digits="8" data-placeholder="8123 4567">🇸🇬 +65</option>
+              <option value="+61" data-digits="9" data-placeholder="412 345 678">🇦🇺 +61</option>
+              <option value="+60" data-digits="10" data-placeholder="12 345 6789">🇲🇾 +60</option>
+              <option value="+49" data-digits="10" data-placeholder="151 2345678">🇩🇪 +49</option>
+              <option value="+" data-digits="15" data-placeholder="Phone number">🌐 + Other</option>
+            </select>
+            <input type="tel" id="om-customer-phone" class="om-phone-input" placeholder="98471 20491" required autocomplete="tel-national" inputmode="numeric" maxlength="10">
+          </div>
+          <div class="om-field-alert" id="om-phone-alert" role="alert">⚠️ Please enter a valid 10-digit WhatsApp number.</div>
         </div>
       </div>
       <div class="om-row">
@@ -1347,6 +1444,8 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
 
     const nameInput = $("#om-customer-name");
     const phoneInput = $("#om-customer-phone");
+    const phoneWrapper = $("#om-phone-wrapper");
+    const countrySelect = $("#om-country-code");
     const instructionsInput = $("#om-instructions");
     if (nameInput) {
       nameInput.value = "";
@@ -1355,12 +1454,19 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     const nameAlert = $("#om-name-alert");
     if (nameAlert) nameAlert.classList.remove("show");
 
+    if (countrySelect) countrySelect.value = "+91";
     if (phoneInput) {
       phoneInput.value = "";
+      phoneInput.maxLength = 10;
+      phoneInput.placeholder = "98471 20491";
       phoneInput.classList.remove("has-error");
     }
+    if (phoneWrapper) phoneWrapper.classList.remove("has-error");
     const phoneAlert = $("#om-phone-alert");
-    if (phoneAlert) phoneAlert.classList.remove("show");
+    if (phoneAlert) {
+      phoneAlert.textContent = "⚠️ Please enter a valid 10-digit WhatsApp number.";
+      phoneAlert.classList.remove("show");
+    }
 
     if (instructionsInput) instructionsInput.value = "";
 
@@ -1506,7 +1612,40 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     const nameInput = $("#om-customer-name");
     const nameAlert = $("#om-name-alert");
     const phoneInput = $("#om-customer-phone");
+    const phoneWrapper = $("#om-phone-wrapper");
+    const countrySelect = $("#om-country-code");
     const phoneAlert = $("#om-phone-alert");
+
+    // Dynamic country digit limit & placeholder updater
+    function updatePhoneCountryLimit() {
+      if (!countrySelect || !phoneInput) return;
+      const selectedOpt = countrySelect.selectedOptions[0];
+      const digits = parseInt(selectedOpt?.dataset.digits || "10", 10);
+      const placeholder = selectedOpt?.dataset.placeholder || "Phone number";
+
+      phoneInput.maxLength = digits;
+      phoneInput.placeholder = placeholder;
+
+      // Clean existing digits if any
+      const cleaned = phoneInput.value.replace(/\D/g, "");
+      if (cleaned.length > digits) {
+        phoneInput.value = cleaned.slice(0, digits);
+      }
+
+      if (phoneAlert) {
+        phoneAlert.textContent = selectedOpt?.value === "+"
+          ? "⚠️ Please enter a valid WhatsApp phone number (minimum 7 digits)."
+          : `⚠️ Please enter a valid ${digits}-digit WhatsApp number.`;
+      }
+    }
+
+    countrySelect?.addEventListener("change", () => {
+      triggerMicroLift(countrySelect);
+      updatePhoneCountryLimit();
+      phoneWrapper?.classList.remove("has-error");
+      phoneAlert?.classList.remove("show");
+      phoneInput?.focus();
+    });
 
     // Tactile micro-lift user feedback trigger (scale-102 with subtle gold highlight)
     const triggerMicroLift = (element) => {
@@ -1579,14 +1718,45 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       nameAlert?.classList.remove("show");
     });
 
+    // Block non-numeric characters from keyboard input
+    phoneInput?.addEventListener("keydown", (e) => {
+      if (
+        e.key === "Backspace" ||
+        e.key === "Delete" ||
+        e.key === "Tab" ||
+        e.key === "Escape" ||
+        e.key === "Enter" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.key === "Home" ||
+        e.key === "End" ||
+        (e.ctrlKey || e.metaKey)
+      ) {
+        return;
+      }
+      if (!/^\d$/.test(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    // Strip any non-digit input (paste, autocomplete) and enforce max digit limit
     phoneInput?.addEventListener("input", () => {
-      phoneInput.classList.remove("has-error");
+      const selectedOpt = countrySelect?.selectedOptions[0];
+      const maxDigits = parseInt(selectedOpt?.dataset.digits || "10", 10);
+      const cleanDigits = phoneInput.value.replace(/\D/g, "").slice(0, maxDigits);
+      if (phoneInput.value !== cleanDigits) {
+        phoneInput.value = cleanDigits;
+      }
+      phoneWrapper?.classList.remove("has-error");
       phoneAlert?.classList.remove("show");
     });
 
     function dispatchWhatsAppOrder() {
       const customerName = nameInput ? nameInput.value.trim() : "";
-      const customerPhone = phoneInput ? phoneInput.value.trim() : "";
+      const selectedOpt = countrySelect ? countrySelect.selectedOptions[0] : null;
+      const countryCode = (countrySelect && countrySelect.value) ? countrySelect.value : "+91";
+      const requiredDigits = parseInt(selectedOpt?.dataset.digits || "10", 10);
+      const rawDigits = phoneInput ? phoneInput.value.replace(/\D/g, "") : "";
 
       let hasError = false;
       if (!customerName) {
@@ -1598,17 +1768,35 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
         hasError = true;
       }
 
-      const digitsOnly = customerPhone.replace(/\D/g, "");
-      if (!customerPhone || digitsOnly.length < 7) {
-        if (phoneInput) {
-          phoneInput.classList.add("has-error");
-          if (!hasError) phoneInput.focus();
+      // Exact digit verification for selected country
+      const isOther = countryCode === "+";
+      const isValidDigits = isOther
+        ? (rawDigits.length >= 7 && rawDigits.length <= 15)
+        : (rawDigits.length === requiredDigits);
+
+      if (!rawDigits || !isValidDigits) {
+        if (phoneWrapper) {
+          phoneWrapper.classList.add("has-error");
+          if (!hasError && phoneInput) phoneInput.focus();
         }
-        if (phoneAlert) phoneAlert.classList.add("show");
+        if (phoneAlert) {
+          if (!rawDigits) {
+            phoneAlert.textContent = isOther
+              ? "⚠️ Please enter your WhatsApp number."
+              : `⚠️ Please enter your WhatsApp number (${requiredDigits} digits required).`;
+          } else {
+            phoneAlert.textContent = isOther
+              ? `⚠️ Incomplete number (${rawDigits.length} digits). Please enter at least 7 digits.`
+              : `⚠️ Incomplete number: ${rawDigits.length}/${requiredDigits} digits entered. Please enter a valid ${requiredDigits}-digit WhatsApp number.`;
+          }
+          phoneAlert.classList.add("show");
+        }
         hasError = true;
       }
 
       if (hasError) return false;
+
+      const customerPhone = isOther ? `+${rawDigits}` : `${countryCode} ${rawDigits}`;
 
       const select = $("#om-cake-select");
       const selectedOpt = select ? select.selectedOptions[0] : null;
