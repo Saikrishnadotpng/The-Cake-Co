@@ -528,6 +528,92 @@
     100% { opacity: 1; transform: scale(1) translate3d(0, 0, 0); }
   }
 
+  /* ---------- Customer WhatsApp Order Modal ---------- */
+  .order-modal-backdrop {
+    position: fixed; inset: 0; z-index: 9999;
+    display: grid; place-items: center; padding: 1.25rem;
+    background: rgba(13, 11, 10, 0.88);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    animation: modalFadeIn .3s var(--ease-reveal) both;
+  }
+  @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .order-modal-card {
+    width: 100%; max-width: 520px;
+    background: rgba(20, 17, 14, 0.96);
+    border: 1.5px solid var(--gold);
+    border-radius: 1.5rem;
+    padding: clamp(1.4rem, 4vw, 2rem);
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,.9), 0 0 35px rgba(212,175,55,.2);
+    animation: modalRise .38s var(--ease-reveal) both;
+    color: var(--espresso);
+  }
+  @keyframes modalRise { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: none; } }
+  :root[data-theme="light"] .order-modal-card {
+    background: rgba(255, 252, 248, 0.98);
+    border-color: rgba(138,110,23,.5);
+    box-shadow: 0 30px 80px -20px rgba(44,37,35,.35), 0 0 25px rgba(212,175,55,.15);
+  }
+  .order-modal-header {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+    padding-bottom: 1rem; border-bottom: 1px solid rgba(212,175,55,.25);
+  }
+  .order-modal-header h2 { font-size: 1.7rem; line-height: 1.2; margin-top: .2rem; }
+  .order-modal-close {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 1.5rem;
+    border: 1px solid rgba(212,175,55,.3); color: var(--gold-deep);
+    transition: all 250ms ease;
+  }
+  .order-modal-close:hover {
+    background: var(--gold); color: #0D0B0A; transform: scale(1.08);
+  }
+  .order-modal-cake-summary {
+    margin: 1.15rem 0; padding: .85rem 1.1rem;
+    border-radius: .9rem; background: rgba(212,175,55,.08);
+    border: 1px solid rgba(212,175,55,.3);
+  }
+  .om-cake-title { display: block; font-family: var(--serif); font-size: 1.25rem; font-weight: 500; color: var(--gold-deep); }
+  .om-cake-sub { font-size: .75rem; color: var(--espresso-soft); margin-top: .15rem; display: block; }
+  .om-field-group { display: grid; gap: .4rem; }
+  .om-label { font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--espresso-soft); font-weight: 600; }
+  .om-input {
+    width: 100%; min-height: 44px; padding: .65rem .95rem;
+    border-radius: .85rem; border: 1px solid var(--sand-deep);
+    background: rgba(25, 22, 19, 0.85); color: var(--espresso); font-size: .92rem;
+    transition: border-color 300ms ease, box-shadow 300ms ease;
+  }
+  :root[data-theme="light"] .om-input {
+    background: #FFFDF9; border-color: #D6C6B0; color: #2C2523;
+  }
+  .om-input:focus {
+    outline: none; border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,175,55,.2);
+  }
+  .om-row { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; margin-top: .85rem; }
+  @media (max-width: 500px) { .om-row { grid-template-columns: 1fr; } }
+  .om-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23D4AF37' stroke-width='1.4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right .85rem center; padding-right: 2.2rem;
+  }
+  .om-textarea { min-height: 72px; resize: vertical; line-height: 1.5; }
+  .om-preset-chips { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .5rem; }
+  .om-chip {
+    font-size: .68rem; padding: .25rem .7rem; border-radius: 999px;
+    border: 1px solid rgba(212,175,55,.3); background: rgba(212,175,55,.06);
+    color: var(--espresso); transition: all 250ms ease;
+  }
+  .om-chip:hover, .om-chip.active {
+    border-color: var(--gold); background: rgba(212,175,55,.22); color: var(--gold-deep);
+  }
+  .om-actions {
+    display: flex; gap: .75rem; justify-content: flex-end; align-items: center;
+    margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid rgba(212,175,55,.18);
+  }
+  .om-submit-btn {
+    font-size: .68rem; letter-spacing: .15em; min-height: 46px;
+    padding: 0 1.4rem;
+  }
+
   @media (hover: hover) and (pointer: fine) {
     .card:hover .frame-inner, .card:hover .frame-art svg, .btn:hover { will-change: transform, opacity; }
   }
@@ -662,7 +748,7 @@
         <div class="pillar reveal r4">
           <p class="big">WhatsApp</p>
           <h3>Direct Bookings</h3>
-          <p>Book, share reference photos and confirm details on <a href="#" data-wa="default" target="_blank" rel="noopener">+91 87143 33247</a>.</p>
+          <p>Book, share reference photos and confirm details on <a href="#" data-wa="default" target="_blank" rel="noopener">+91 94478 67023</a>.</p>
         </div>
       </div>
     </div>
@@ -678,7 +764,7 @@
       <h2 class="adaptive-title text-gray-900 dark:text-[#F5F2EB]">Tell us about your celebration.</h2>
       <div class="row">
         <a href="#" class="btn btn-primary" data-wa="inquiry" data-magnet="Order" target="_blank" rel="noopener"><span class="fill"></span><span class="sheen"></span><span class="star" aria-hidden="true">✦</span>Book on WhatsApp</a>
-        <a href="tel:+918714333247" class="btn btn-ghost" data-magnet="Call"><span class="fill"></span><span class="sheen"></span>Call the Shop</a>
+        <a href="tel:+919447867023" class="btn btn-ghost" data-magnet="Call"><span class="fill"></span><span class="sheen"></span>Call the Shop</a>
       </div>
     </div>
 
@@ -698,8 +784,8 @@
         <p class="hours">Open Daily: 10:00 AM — 9:00 PM</p>
         <p class="night">Night Delivery: Until 11:30 PM</p>
         <div class="links">
-          <a class="lux-link" href="#" data-wa="default" target="_blank" rel="noopener">WhatsApp +91 87143 33247</a>
-          <a class="lux-link" href="tel:+918714333247">Call +91 87143 33247</a>
+          <a class="lux-link" href="#" data-wa="default" target="_blank" rel="noopener">WhatsApp +91 94478 67023</a>
+          <a class="lux-link" href="tel:+919447867023">Call +91 94478 67023</a>
         </div>
       </div>
     </div>
@@ -714,6 +800,62 @@
 <button class="return-top" id="return-top" type="button" aria-label="Return to top" aria-hidden="true" tabindex="-1" title="Return to top">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 14 7-7 7 7M12 7v13"/></svg>
 </button>
+
+<!-- Customer WhatsApp Order Modal -->
+<div class="order-modal-backdrop" id="order-modal" hidden>
+  <div class="order-modal-card" role="dialog" aria-modal="true" aria-labelledby="order-modal-title">
+    <div class="order-modal-header">
+      <div>
+        <span class="eyebrow gold">Bespoke WhatsApp Order</span>
+        <h2 id="order-modal-title" class="serif">Configure Your Cake</h2>
+      </div>
+      <button type="button" class="order-modal-close" id="order-modal-close" aria-label="Close order dialog">&times;</button>
+    </div>
+    <form id="order-modal-form">
+      <div class="order-modal-cake-summary">
+        <strong id="om-cake-name" class="om-cake-title"></strong>
+        <span id="om-cake-meta" class="om-cake-sub"></span>
+      </div>
+      <div class="om-field-group">
+        <label for="om-customer-name" class="om-label">Your Name *</label>
+        <input type="text" id="om-customer-name" class="om-input" placeholder="e.g. Maya Nair" required autocomplete="name">
+      </div>
+      <div class="om-row">
+        <div class="om-field-group">
+          <label for="om-weight" class="om-label">Weight / Size</label>
+          <select id="om-weight" class="om-input om-select">
+            <option value="1.0 kg" selected>1.0 kg</option>
+            <option value="1.5 kg">1.5 kg</option>
+            <option value="2.0 kg">2.0 kg</option>
+            <option value="3.0 kg">3.0 kg</option>
+            <option value="Custom Size">Custom Size</option>
+          </select>
+        </div>
+        <div class="om-field-group">
+          <label for="om-deadline" class="om-label">Target Deadline</label>
+          <input type="text" id="om-deadline" class="om-input" placeholder="e.g. Today · 8:00 PM" value="Today · 8:00 PM">
+        </div>
+      </div>
+      <div class="om-preset-chips" id="om-deadline-chips">
+        <button type="button" class="om-chip" data-time="In 2 Hours">⚡ In 2 Hours</button>
+        <button type="button" class="om-chip active" data-time="Today · 8:00 PM">🌅 Today 8 PM</button>
+        <button type="button" class="om-chip" data-time="Today · 10:00 PM">🌙 Today 10 PM</button>
+        <button type="button" class="om-chip" data-time="Tomorrow · 11:00 AM">🎂 Tomorrow 11 AM</button>
+      </div>
+      <div class="om-field-group" style="margin-top: .9rem;">
+        <label for="om-instructions" class="om-label">Special Lettering / Frosting Instructions</label>
+        <textarea id="om-instructions" class="om-input om-textarea" rows="2" placeholder="e.g. Write 'Happy Birthday Rahul!' in gold script. Eggless preference."></textarea>
+      </div>
+      <div class="om-actions">
+        <button type="button" class="btn btn-ghost" id="om-cancel-btn"><span>Cancel</span></button>
+        <button type="submit" class="btn btn-primary om-submit-btn">
+          <span class="fill"></span><span class="sheen"></span>
+          <span>✦ Send via WhatsApp (+91 94478 67023)</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
 </div>
 
@@ -731,7 +873,7 @@ window.globalCakeMeshMaterial = null;
 
   const SHOP = Object.freeze({
     name: "The Cake Co.",
-    whatsapp: "918714333247",
+    whatsapp: "919447867023",
   });
   const THREE_SRC = "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js";
   const THREE_SRI = "sha384-RRHfJ6w1mTlKUBMYT/hvnRiOzEB/vyRV3DrQOseb6oYfvaZSfdd0byS4bHps0k2R";
@@ -744,8 +886,12 @@ window.globalCakeMeshMaterial = null;
   };
   const waLink = (text) => `https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(text)}`;
   const MESSAGES = {
-    default: `Hello ${SHOP.name}! I'd like to place a cake order.`,
-    inquiry: `Hello ${SHOP.name}! I'd like to book a cake for a celebration.`,
+    default: `🎂 *THE CAKE CO. (TCC) — STOREFRONT ORDER*
+━━━━━━━━━━━━━━━━━━━━━━━
+Hello ${SHOP.name}! I would like to inquire about today's fresh cakes and place an order.`,
+    inquiry: `🎂 *THE CAKE CO. (TCC) — CELEBRATION BOOKING*
+━━━━━━━━━━━━━━━━━━━━━━━
+Hello ${SHOP.name}! I would like to book a bespoke cake for an upcoming celebration.`,
   };
 
   function initLinks() {
@@ -854,6 +1000,117 @@ window.globalCakeMeshMaterial = null;
     return wrap;
   }
 
+  /* ---------- WhatsApp Formatted Ordering Flow (+91 94478 67023) ---------- */
+  function formatWhatsAppOrderMessage({ name, cakeName, weight, price, deadline, instructions, category }) {
+    const custName = (name && name.trim()) || "Customer";
+    const cake = cakeName || "Bespoke Cake";
+    const cat = category || "Celebration Cakes";
+    const wt = weight || "1.0 kg";
+    const pr = price || "Price on request";
+    const dl = (deadline && deadline.trim()) || "Today · 8:00 PM";
+    const notes = (instructions && instructions.trim()) || "None specified";
+
+    return `🎂 *THE CAKE CO. (TCC) — CUSTOM CAKE ORDER*
+━━━━━━━━━━━━━━━━━━━━━━━
+*Customer Name:* ${custName}
+*Cake Selection:* ${cake}
+*Category:* ${cat}
+*Weight / Size:* ${wt}
+*Price / Rate:* ${pr}
+*Target Deadline:* ${dl}
+*Special Lettering / Instructions:* "${notes}"
+━━━━━━━━━━━━━━━━━━━━━━━
+*Order Routing:* Direct WhatsApp Gateway (+91 94478 67023)
+Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
+  }
+
+  let activeOrderItem = null;
+
+  function openOrderModal(item, cat, priceText) {
+    activeOrderItem = { item, cat, priceText };
+    const modal = $("#order-modal");
+    if (!modal) {
+      const fallbackMsg = formatWhatsAppOrderMessage({
+        name: "",
+        cakeName: item.name,
+        category: cat.label,
+        weight: "1.0 kg",
+        price: priceText,
+        deadline: "Today · 8:00 PM",
+        instructions: ""
+      });
+      window.open(waLink(fallbackMsg), "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    const titleEl = $("#om-cake-name");
+    const metaEl = $("#om-cake-meta");
+    const nameInput = $("#om-customer-name");
+    const instructionsInput = $("#om-instructions");
+
+    if (titleEl) titleEl.textContent = item.name;
+    if (metaEl) metaEl.textContent = `${cat.label}${priceText ? ` · ${priceText}` : " · Price on request"}`;
+    if (nameInput) nameInput.value = "";
+    if (instructionsInput) instructionsInput.value = "";
+
+    modal.hidden = false;
+    if (nameInput) nameInput.focus();
+  }
+
+  function closeOrderModal() {
+    const modal = $("#order-modal");
+    if (modal) modal.hidden = true;
+  }
+
+  function initOrderModal() {
+    const modal = $("#order-modal");
+    if (!modal) return;
+    const closeBtn = $("#order-modal-close");
+    const cancelBtn = $("#om-cancel-btn");
+    const form = $("#order-modal-form");
+    const chips = $$(".om-chip", modal);
+    const deadlineInput = $("#om-deadline");
+
+    closeBtn?.addEventListener("click", closeOrderModal);
+    cancelBtn?.addEventListener("click", closeOrderModal);
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeOrderModal();
+    });
+
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        chips.forEach((c) => c.classList.remove("active"));
+        chip.classList.add("active");
+        if (deadlineInput) deadlineInput.value = chip.dataset.time || "";
+      });
+    });
+
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!activeOrderItem) return;
+      const { item, cat, priceText } = activeOrderItem;
+      const customerName = $("#om-customer-name")?.value.trim() || "";
+      const weight = $("#om-weight")?.value || "1.0 kg";
+      const deadline = $("#om-deadline")?.value.trim() || "Today";
+      const instructions = $("#om-instructions")?.value.trim() || "";
+
+      const msg = formatWhatsAppOrderMessage({
+        name: customerName,
+        cakeName: item.name,
+        category: cat.label,
+        weight,
+        price: priceText,
+        deadline,
+        instructions
+      });
+
+      const url = waLink(msg);
+      window.open(url, "_blank", "noopener,noreferrer");
+      closeOrderModal();
+    });
+  }
+
   /* 3. ADAPTIVE TYPOGRAPHY CONTRAST AND GRID RENDERING */
   function cardNode(item, categoryMap, index) {
     const cat = categoryMap.get(item.category) || { label: "Cakes", unit: "kg" };
@@ -873,10 +1130,22 @@ window.globalCakeMeshMaterial = null;
       item.badge ? el("span", { class: "badge", text: item.badge }) : null,
     ]);
     const priceText = formatPrice(item.price, cat.unit);
-    const orderMsg = `Hello ${SHOP.name}! I'd like to order the ${item.name}${priceText ? ` (${priceText})` : ""}.`;
-    const orderBtn = el("a", { class: "btn btn-ghost", href: waLink(orderMsg), target: "_blank", rel: "noopener", "data-magnet": "Order", "aria-label": `Order ${item.name} on WhatsApp` }, [
+    const directOrderMsg = formatWhatsAppOrderMessage({
+      name: "",
+      cakeName: item.name,
+      category: cat.label,
+      weight: "1.0 kg",
+      price: priceText,
+      deadline: "Today · 8:00 PM",
+      instructions: ""
+    });
+    const orderBtn = el("a", { class: "btn btn-ghost card-order-btn", href: waLink(directOrderMsg), target: "_blank", rel: "noopener", "data-magnet": "Order", "aria-label": `Order ${item.name} on WhatsApp (+91 94478 67023)` }, [
       el("span", { class: "fill" }), el("span", { class: "sheen" }), document.createTextNode("Order"),
     ]);
+    orderBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      openOrderModal(item, cat, priceText);
+    });
     const card = el("article", { class: "card reveal reveal-scale adaptive-card text-gray-900 dark:text-[#F5F2EB]", "data-magnet": "View" }, [
       frame,
       el("h3", { class: "adaptive-title text-gray-900 dark:text-[#F5F2EB]", text: item.name }),
@@ -2140,6 +2409,7 @@ window.globalCakeMeshMaterial = null;
     safely("links", initLinks);
     safely("theme", initTheme);
     safely("collection", initCollection);
+    safely("order modal", initOrderModal);
     safely("smooth scroll", initSmoothScroll);
     safely("return to top", initReturnToTop);
     safely("reveals", initReveals);
