@@ -358,6 +358,10 @@
   .lc-label { font-family: var(--sans); font-weight: 500; font-size: 9px; line-height: 1; letter-spacing: .3em; padding-left: .3em; text-transform: uppercase; white-space: nowrap; color: var(--ivory); will-change: transform, opacity; }
   html.cursor-on, html.cursor-on * { cursor: none !important; }
   .magnet-release { transition: translate 650ms var(--ease-reveal) !important; }
+  body.modal-open #liquid-cursor { display: none !important; opacity: 0 !important; pointer-events: none !important; }
+  body.modal-open, body.modal-open * { cursor: auto !important; }
+  body.modal-open input, body.modal-open textarea { cursor: text !important; }
+  body.modal-open select, body.modal-open button, body.modal-open a, body.modal-open .btn { cursor: pointer !important; }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
@@ -1336,6 +1340,11 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     modal.classList.remove("closing");
     modal.classList.add("active");
     document.body.style.overflow = "hidden";
+    document.body.classList.add("modal-open");
+
+    // Immediately clear liquid cursor host visibility so it doesn't linger over the modal
+    const hostCursor = $("#liquid-cursor");
+    if (hostCursor) hostCursor.classList.remove("visible");
 
     if (nameInput) nameInput.focus();
   }
@@ -1346,6 +1355,7 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
 
     modal.classList.add("closing");
     modal.classList.remove("active");
+    document.body.classList.remove("modal-open");
 
     setTimeout(() => {
       modal.hidden = true;
@@ -1586,10 +1596,17 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       const cleanTestingPhone = "919447867023";
       const whatsappUrl = `https://wa.me/${cleanTestingPhone}?text=${encodeURIComponent(msg)}`;
 
-      // Execute direct window instance initialization immediately upon click validation
-      const win = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-      if (!win || win.closed || typeof win.closed === "undefined") {
-        window.location.href = whatsappUrl;
+      // Safely open WhatsApp order in a clean new tab without redirecting storefront page
+      try {
+        const a = document.createElement("a");
+        a.href = whatsappUrl;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (err) {
+        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
       }
 
       closeOrderModal();
@@ -1622,7 +1639,7 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     } else {
       inner.appendChild(artNode(item.art));
     }
-    const frame = el("div", { class: "frame" }, [
+    const frame = el("div", { class: "frame", "data-cursor-label": "View" }, [
       inner,
       el("span", { class: "frame-shade", "aria-hidden": "true" }),
       el("span", { class: "frame-border", "aria-hidden": "true" }),
@@ -1645,7 +1662,7 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       e.preventDefault();
       openOrderModal(item, cat, priceText);
     });
-    const card = el("article", { class: "card reveal reveal-scale adaptive-card text-gray-900 dark:text-[#F5F2EB]", "data-magnet": "View" }, [
+    const card = el("article", { class: "card reveal reveal-scale adaptive-card text-gray-900 dark:text-[#F5F2EB]" }, [
       frame,
       el("h3", { class: "adaptive-title text-gray-900 dark:text-[#F5F2EB]", text: item.name }),
       el("p", { class: "cat adaptive-cat", text: cat.label }),
@@ -2768,10 +2785,18 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
 
     function onMove(e) {
       if (e.pointerType && e.pointerType !== "mouse") { host.classList.remove("visible"); return; }
+      if (document.body.classList.contains("modal-open")) {
+        host.classList.remove("visible");
+        return;
+      }
       S.mx = e.clientX; S.my = e.clientY;
       if (!S.seen) { S.seen = true; S.px = S.mx; S.py = S.my; S.rx.x = S.mx; S.ry.x = S.my; }
-      host.classList.add("visible");
       const t = e.target instanceof Element ? e.target : null;
+      if (t && t.closest("#order-modal")) {
+        host.classList.remove("visible");
+        return;
+      }
+      host.classList.add("visible");
       const labelled = t && t.closest("[data-cursor-label]");
       S.softLabel = labelled ? labelled.dataset.cursorLabel : "";
       S.soft = !!(t && (t.closest(SOFT) || labelled));
@@ -2789,8 +2814,10 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     }
     function findMagnet() {
       if (!S.seen || !host.classList.contains("visible")) return null;
+      if (document.body.classList.contains("modal-open")) return null;
       let best = null, area = Infinity;
       for (const elm of document.querySelectorAll("[data-magnet]")) {
+        if (elm.closest("#order-modal") || elm.offsetParent === null) continue;
         const r = elm.getBoundingClientRect();
         if (!r.width || !r.height) continue;
         if (S.mx >= r.left - PAD && S.mx <= r.right + PAD && S.my >= r.top - PAD && S.my <= r.bottom + PAD) {
