@@ -533,10 +533,11 @@
     position: fixed; inset: 0; z-index: 9999;
     display: none; /* Defaults to hidden upon initialization */
     place-items: center; padding: 1.25rem;
-    background: rgba(13, 11, 10, 0.88);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(10, 8, 7, 0.86);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
     opacity: 0;
-    transition: opacity 280ms var(--ease-reveal);
+    transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .order-modal-backdrop[hidden] {
     display: none !important;
@@ -544,32 +545,54 @@
   .order-modal-backdrop.active {
     display: grid !important;
     opacity: 1;
-    animation: modalFadeIn .3s var(--ease-reveal) both;
+    animation: modalBackdropFadeIn 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes modalBackdropFadeIn {
+    0% { opacity: 0; backdrop-filter: blur(0px) saturate(100%); -webkit-backdrop-filter: blur(0px) saturate(100%); }
+    100% { opacity: 1; backdrop-filter: blur(22px) saturate(180%); -webkit-backdrop-filter: blur(22px) saturate(180%); }
+  }
   .order-modal-card {
     width: 100%; max-width: 520px;
     background: rgba(20, 17, 14, 0.96);
     border: 1.5px solid var(--gold);
     border-radius: 1.5rem;
     padding: clamp(1.4rem, 4vw, 2rem);
-    box-shadow: 0 30px 80px -20px rgba(0,0,0,.9), 0 0 35px rgba(212,175,55,.2);
-    animation: modalRise .38s var(--ease-reveal) both;
+    box-shadow: 0 35px 90px -20px rgba(0,0,0,.95), 0 0 40px rgba(212,175,55,.25);
     color: var(--espresso);
-    transform: translateY(0) scale(1);
-    transition: transform 280ms var(--ease-reveal), opacity 280ms var(--ease-reveal);
+    transform-origin: center center;
+    animation: modalElasticZoomIn 460ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    will-change: transform, opacity;
   }
-  @keyframes modalRise { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: none; } }
+  @keyframes modalElasticZoomIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.82) translateY(26px);
+    }
+    65% {
+      opacity: 1;
+      transform: scale(1.025) translateY(-3px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
 
   /* Reverse fade/slide animation when closing */
   .order-modal-backdrop.closing {
-    animation: modalFadeOut .26s var(--ease-silk) forwards;
+    animation: modalBackdropFadeOut 240ms cubic-bezier(0.4, 0, 1, 1) forwards;
   }
   .order-modal-backdrop.closing .order-modal-card {
-    animation: modalFallOut .26s var(--ease-silk) forwards;
+    animation: modalZoomOut 240ms cubic-bezier(0.4, 0, 1, 1) forwards;
   }
-  @keyframes modalFadeOut { from { opacity: 1; } to { opacity: 0; } }
-  @keyframes modalFallOut { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(22px) scale(0.96); } }
+  @keyframes modalBackdropFadeOut {
+    0% { opacity: 1; backdrop-filter: blur(22px); }
+    100% { opacity: 0; backdrop-filter: blur(0px); }
+  }
+  @keyframes modalZoomOut {
+    0% { opacity: 1; transform: scale(1) translateY(0); }
+    100% { opacity: 0; transform: scale(0.92) translateY(18px); }
+  }
 
   :root[data-theme="light"] .order-modal-card {
     background: rgba(255, 252, 248, 0.98);
@@ -723,12 +746,45 @@
   .om-textarea { min-height: 72px; resize: vertical; line-height: 1.5; }
   .om-preset-chips { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .5rem; }
   .om-chip {
-    font-size: .68rem; padding: .25rem .7rem; border-radius: 999px;
+    font-size: .68rem; padding: .28rem .72rem; border-radius: 999px;
     border: 1px solid rgba(212,175,55,.3); background: rgba(212,175,55,.06);
-    color: var(--espresso); transition: all 250ms ease;
+    color: var(--espresso);
+    cursor: pointer;
+    transition: transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    will-change: transform;
+    user-select: none;
   }
-  .om-chip:hover, .om-chip.active {
-    border-color: var(--gold); background: rgba(212,175,55,.22); color: var(--gold-deep);
+  .om-chip:hover {
+    border-color: var(--gold);
+    background: rgba(212,175,55,.18);
+    color: var(--gold-deep);
+    transform: translateY(-1.5px) scale(1.02);
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25);
+  }
+  .om-chip:active,
+  .om-chip.micro-lift {
+    transform: translateY(-2px) scale(1.02) !important;
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.35), 0 4px 14px -2px rgba(212, 175, 55, 0.4) !important;
+  }
+  .om-chip.active {
+    border-color: var(--gold);
+    background: var(--gold);
+    color: #0D0B0A;
+    font-weight: 600;
+    box-shadow: 0 4px 16px -3px rgba(212, 175, 55, 0.5), 0 0 0 2px rgba(212, 175, 55, 0.25);
+    transform: scale(1.02);
+  }
+  .om-tactile-control {
+    transition: transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1), border-color 180ms ease, box-shadow 180ms ease;
+    will-change: transform;
+  }
+  .om-tactile-control:focus,
+  .om-tactile-control:active,
+  .om-tactile-control.micro-lift {
+    transform: scale(1.02);
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3), 0 8px 24px -6px rgba(212, 175, 55, 0.35) !important;
   }
   .om-actions {
     display: flex; gap: .75rem; justify-content: flex-end; align-items: center;
@@ -954,17 +1010,23 @@
       <div class="om-row">
         <div class="om-field-group">
           <label for="om-weight" class="om-label">Weight / Size</label>
-          <select id="om-weight" class="om-input om-select">
+          <select id="om-weight" class="om-input om-select om-tactile-control">
             <option value="1.0 kg" selected>1.0 kg</option>
             <option value="1.5 kg">1.5 kg</option>
             <option value="2.0 kg">2.0 kg</option>
             <option value="3.0 kg">3.0 kg</option>
             <option value="Custom Size">Custom Size</option>
           </select>
+          <div class="om-preset-chips" id="om-weight-chips" style="margin-top: .35rem;">
+            <button type="button" class="om-chip active" data-weight="1.0 kg">1.0 kg</button>
+            <button type="button" class="om-chip" data-weight="1.5 kg">1.5 kg</button>
+            <button type="button" class="om-chip" data-weight="2.0 kg">2.0 kg</button>
+            <button type="button" class="om-chip" data-weight="3.0 kg">3.0 kg</button>
+          </div>
         </div>
         <div class="om-field-group">
           <label for="om-deadline" class="om-label">Target Deadline</label>
-          <input type="text" id="om-deadline" class="om-input" placeholder="e.g. Today · 8:00 PM" value="Today · 8:00 PM">
+          <input type="text" id="om-deadline" class="om-input om-tactile-control" placeholder="e.g. Today · 8:00 PM" value="Today · 8:00 PM">
         </div>
       </div>
       <div class="om-preset-chips" id="om-deadline-chips">
@@ -1293,6 +1355,96 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     }, 260);
   }
 
+  function generateOrderId() {
+    const numPart = Math.floor(1000 + Math.random() * 9000);
+    const alphaPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `TCC-ORD-${numPart}-${alphaPart}`;
+  }
+
+  function logOrderToActiveDeck({ customerName, cakeName, category, badge, priceText, weight, deadline, instructions }) {
+    const orderId = generateOrderId();
+    const tagDescriptor = `${cakeName}${badge ? ` [${badge}]` : ""}${category ? ` (${category})` : ""}`;
+
+    const orderPayload = {
+      id: orderId,
+      orderId: orderId,
+      confectionChoice: {
+        name: cakeName,
+        badge: badge || "Classic",
+        category: category,
+        price: priceText,
+        descriptor: tagDescriptor
+      },
+      itemName: cakeName,
+      cakeName: cakeName,
+      metadata: {
+        customerName: customerName,
+        deadline: deadline,
+        weight: weight,
+        instructions: instructions,
+        category: category,
+        price: priceText,
+        badge: badge || "Classic"
+      },
+      customerName: customerName,
+      customerPhone: "+91 94478 67023",
+      weight: weight,
+      deadline: deadline,
+      customMessage: instructions,
+      instructions: instructions,
+      verificationStatus: "Pending Verification",
+      verified: false,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+      timestamp: Date.now()
+    };
+
+    try {
+      // 1. Centralized array in local storage ('tcc_active_orders_deck')
+      const rawDeck = localStorage.getItem("tcc_active_orders_deck");
+      let activeDeck = [];
+      if (rawDeck) {
+        try { activeDeck = JSON.parse(rawDeck); } catch {}
+      }
+      if (!Array.isArray(activeDeck)) activeDeck = [];
+      activeDeck.unshift(orderPayload);
+      const serializedDeck = JSON.stringify(activeDeck);
+      localStorage.setItem("tcc_active_orders_deck", serializedDeck);
+
+      // Synchronize with tcc-static-orders for live Admin Studio compatibility
+      const rawStatic = localStorage.getItem("tcc-static-orders");
+      let staticOrders = [];
+      if (rawStatic) {
+        try { staticOrders = JSON.parse(rawStatic); } catch {}
+      }
+      if (!Array.isArray(staticOrders)) staticOrders = [];
+      staticOrders.unshift(orderPayload);
+      localStorage.setItem("tcc-static-orders", JSON.stringify(staticOrders));
+
+      // 2. Fire standardized browser window storage event ('storage') so adjacent open tabs catch registration
+      window.dispatchEvent(new StorageEvent("storage", {
+        key: "tcc_active_orders_deck",
+        oldValue: rawDeck,
+        newValue: serializedDeck,
+        url: window.location.href,
+        storageArea: localStorage
+      }));
+
+      // Broadcast channel for multi-tab workspace sync
+      if (typeof BroadcastChannel !== "undefined") {
+        try {
+          const bc = new BroadcastChannel("tcc_orders_channel");
+          bc.postMessage({ type: "NEW_ORDER", order: orderPayload, deck: activeDeck });
+          bc.close();
+        } catch {}
+      }
+    } catch (err) {
+      console.warn("[TCC] Local storage serialization error:", err);
+    }
+
+    return orderPayload;
+  }
+
   function initOrderModal() {
     const modal = $("#order-modal");
     if (!modal) return;
@@ -1305,14 +1457,32 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
     const closeBtn = $("#order-modal-close");
     const cancelBtn = $("#om-cancel-btn");
     const form = $("#order-modal-form");
-    const chips = $$(".om-chip", modal);
+    const deadlineChips = $$("#om-deadline-chips .om-chip", modal);
+    const weightChips = $$("#om-weight-chips .om-chip", modal);
     const deadlineInput = $("#om-deadline");
+    const weightSelect = $("#om-weight");
     const cakeSelect = $("#om-cake-select");
+    const nameInput = $("#om-customer-name");
+    const nameAlert = $("#om-name-alert");
+
+    // Tactile micro-lift user feedback trigger (scale-102 with subtle gold highlight)
+    const triggerMicroLift = (element) => {
+      if (!element) return;
+      element.classList.remove("micro-lift");
+      void element.offsetWidth; // trigger reflow
+      element.classList.add("micro-lift");
+      setTimeout(() => element.classList.remove("micro-lift"), 220);
+    };
 
     // Pre-populate dropdown from default items
     populateOrderCakeDropdown();
 
-    cakeSelect?.addEventListener("change", updateSelectedCakeMeta);
+    cakeSelect?.addEventListener("change", () => {
+      triggerMicroLift(cakeSelect);
+      updateSelectedCakeMeta();
+      const metaTag = $(".meta-tag", modal);
+      if (metaTag) triggerMicroLift(metaTag);
+    });
 
     closeBtn?.addEventListener("click", closeOrderModal);
     cancelBtn?.addEventListener("click", closeOrderModal);
@@ -1327,16 +1497,39 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       }
     });
 
-    chips.forEach((chip) => {
+    // Interactive time pill options with micro-lifts
+    deadlineChips.forEach((chip) => {
       chip.addEventListener("click", () => {
-        chips.forEach((c) => c.classList.remove("active"));
+        deadlineChips.forEach((c) => c.classList.remove("active"));
         chip.classList.add("active");
-        if (deadlineInput) deadlineInput.value = chip.dataset.time || "";
+        triggerMicroLift(chip);
+        if (deadlineInput) {
+          deadlineInput.value = chip.dataset.time || "";
+          triggerMicroLift(deadlineInput);
+        }
       });
     });
 
-    const nameInput = $("#om-customer-name");
-    const nameAlert = $("#om-name-alert");
+    // Preset weight chips with micro-lifts
+    weightChips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        weightChips.forEach((c) => c.classList.remove("active"));
+        chip.classList.add("active");
+        triggerMicroLift(chip);
+        if (weightSelect) {
+          weightSelect.value = chip.dataset.weight || "1.0 kg";
+          triggerMicroLift(weightSelect);
+        }
+      });
+    });
+
+    weightSelect?.addEventListener("change", () => {
+      triggerMicroLift(weightSelect);
+      const val = weightSelect.value;
+      weightChips.forEach((chip) => {
+        chip.classList.toggle("active", chip.dataset.weight === val);
+      });
+    });
 
     nameInput?.addEventListener("input", () => {
       nameInput.classList.remove("has-error");
@@ -1360,15 +1553,24 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       const cakeName = selectedOpt?.dataset.cakeName || (activeOrderItem?.item?.name) || "Bespoke Cake";
       const category = selectedOpt?.dataset.category || (activeOrderItem?.cat?.label) || "Celebration Cakes";
       const priceText = selectedOpt?.dataset.price || (activeOrderItem?.priceText) || "Price on request";
+      const badge = selectedOpt?.dataset.badge || "";
 
-      const weightSelect = $("#om-weight");
       const weight = weightSelect ? weightSelect.value : "1.0 kg";
-
-      const deadlineInput = $("#om-deadline");
       const deadline = (deadlineInput && deadlineInput.value.trim()) || "Today · 8:00 PM";
-
       const instructionsInput = $("#om-instructions");
       const instructions = (instructionsInput && instructionsInput.value.trim()) || "None specified";
+
+      // 1. Create automated order logging object and synchronize to local storage ('tcc_active_orders_deck')
+      logOrderToActiveDeck({
+        customerName,
+        cakeName,
+        category,
+        badge,
+        priceText,
+        weight,
+        deadline,
+        instructions
+      });
 
       const msg = formatWhatsAppOrderMessage({
         name: customerName,
