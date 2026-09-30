@@ -1000,22 +1000,33 @@ try {
 const server = app.listen(PORT, () => {
   console.log(`[server] The Cake Co. running at http://localhost:${PORT} (${NODE_ENV})`);
 });
-server.headersTimeout = 15_000;
-server.requestTimeout = 30_000;
+// Prevent slow-client attacks: kill idle keep-alive connections quickly
+server.keepAliveTimeout = 65_000;      // slightly > common LB idle timeouts (60s)
+server.headersTimeout = 70_000;        // must be > keepAliveTimeout
+server.requestTimeout = 30_000;        // max time for a single request body
+server.maxHeadersCount = 80;           // reject header-flooding
+if (typeof server.maxConnections !== "undefined") server.maxConnections = 1000;
 
 let closing = false;
 function shutdown(signal) {
   if (closing) return;
   closing = true;
   console.log(`[server] ${signal} received, finishing pending writes`);
-  for (const stream of menuStreams) stream.end();
-  menuStreams.clear();
-  const force = setTimeout(() => process.exit(1), 10_000);
-  force.unref();
+  // Stop accepting new connections
   server.close(async () => {
     try { await Promise.all([writeQueue, auditQueue, ordersQueue]); } catch { /* already logged */ }
+    console.log("[server] Clean shutdown complete.");
     process.exit(0);
   });
+  // Close all SSE streams immediately so clients reconnect elsewhere
+  for (const stream of menuStreams) { try { stream.end(); } catch {} }
+  menuStreams.clear();
+  // Force-exit after 12s if something hangs
+  const force = setTimeout(() => {
+    console.error("[server] Forced exit after timeout");
+    process.exit(1);
+  }, 12_000);
+  force.unref();
 }
 process.on("SIGTERM", () => shutdown("SIGTERM"));
 process.on("SIGINT", () => shutdown("SIGINT"));

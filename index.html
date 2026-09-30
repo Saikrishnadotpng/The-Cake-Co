@@ -536,10 +536,14 @@
   .order-modal-backdrop {
     position: fixed; inset: 0; z-index: 9999;
     display: none; /* Defaults to hidden upon initialization */
-    place-items: center; padding: 1.25rem;
-    background: rgba(10, 8, 7, 0.86);
+    place-items: start center;
+    padding: env(safe-area-inset-top, 1rem) 1rem env(safe-area-inset-bottom, 1rem);
+    padding-top: max(env(safe-area-inset-top, 0px), 0.75rem);
+    background: rgba(10, 8, 7, 0.88);
     backdrop-filter: blur(22px) saturate(180%);
     -webkit-backdrop-filter: blur(22px) saturate(180%);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     opacity: 0;
     transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -557,15 +561,32 @@
   }
   .order-modal-card {
     width: 100%; max-width: 520px;
+    max-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 1.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     background: rgba(20, 17, 14, 0.96);
     border: 1.5px solid var(--gold);
     border-radius: 1.5rem;
-    padding: clamp(1.4rem, 4vw, 2rem);
+    padding: clamp(1.2rem, 4vw, 2rem);
     box-shadow: 0 35px 90px -20px rgba(0,0,0,.95), 0 0 40px rgba(212,175,55,.25);
     color: var(--espresso);
-    transform-origin: center center;
+    transform-origin: center top;
     animation: modalElasticZoomIn 460ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
     will-change: transform, opacity;
+    margin: auto;
+  }
+  /* Thin scrollbar inside the modal card */
+  .order-modal-card::-webkit-scrollbar { width: 4px; }
+  .order-modal-card::-webkit-scrollbar-track { background: transparent; }
+  .order-modal-card::-webkit-scrollbar-thumb { background: rgba(212,175,55,.35); border-radius: 99px; }
+  @media (max-width: 540px) {
+    .order-modal-backdrop { padding: 0.5rem; align-items: flex-start; }
+    .order-modal-card {
+      max-height: calc(100dvh - 1rem);
+      border-radius: 1.1rem;
+      padding: 1.1rem;
+    }
   }
   @keyframes modalElasticZoomIn {
     0% {
@@ -820,8 +841,10 @@
   :root[data-theme="light"] .om-phone-input {
     color: #2C2523;
   }
-  .om-row { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; margin-top: .85rem; }
-  @media (max-width: 500px) { .om-row { grid-template-columns: 1fr; } }
+  .om-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: .75rem; }
+  @media (max-width: 560px) { .om-row { grid-template-columns: 1fr; gap: .6rem; } }
+  .om-contact-row { margin-top: 0 !important; margin-bottom: 0 !important; }
+  @media (max-width: 620px) { .om-contact-row { grid-template-columns: 1fr; } }
   .om-select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -834,7 +857,8 @@
     display: none;
   }
   .om-textarea { min-height: 72px; resize: vertical; line-height: 1.5; }
-  .om-preset-chips { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .5rem; }
+  .om-preset-chips { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .45rem; }
+  @media (max-width: 400px) { .om-chip { font-size: .62rem; padding: .22rem .55rem; } }
   .om-chip {
     font-size: .68rem; padding: .28rem .72rem; border-radius: 999px;
     border: 1px solid rgba(212,175,55,.3); background: rgba(212,175,55,.06);
@@ -877,12 +901,18 @@
     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3), 0 8px 24px -6px rgba(212, 175, 55, 0.35) !important;
   }
   .om-actions {
-    display: flex; gap: .75rem; justify-content: flex-end; align-items: center;
-    margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid rgba(212,175,55,.18);
+    display: flex; gap: .65rem; justify-content: flex-end; align-items: center;
+    margin-top: 1.2rem; padding-top: .9rem; border-top: 1px solid rgba(212,175,55,.18);
+    flex-wrap: wrap;
   }
   .om-submit-btn {
-    font-size: .68rem; letter-spacing: .15em; min-height: 46px;
-    padding: 0 1.4rem;
+    font-size: .66rem; letter-spacing: .12em; min-height: 46px;
+    padding: 0 1.2rem; flex: 1; min-width: 0;
+  }
+  @media (max-width: 400px) {
+    .om-actions { flex-direction: column; }
+    .om-submit-btn { width: 100%; }
+    .om-actions .btn-ghost { width: 100%; }
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -1838,17 +1868,12 @@ Hello ${SHOP.name}! I would like to place and confirm this order via WhatsApp.`;
       const cleanTestingPhone = "919447867023";
       const whatsappUrl = `https://wa.me/${cleanTestingPhone}?text=${encodeURIComponent(msg)}`;
 
-      // Safely open WhatsApp order in a clean new tab without redirecting storefront page
-      try {
-        const a = document.createElement("a");
-        a.href = whatsappUrl;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      } catch (err) {
-        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      // Open WhatsApp order — window.open must be called directly inside a
+      // user-gesture handler; programmatic a.click() gets blocked by popup blockers.
+      const waWin = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      if (!waWin) {
+        // Fallback: navigate the current tab if popup was blocked
+        window.location.href = whatsappUrl;
       }
 
       closeOrderModal();
